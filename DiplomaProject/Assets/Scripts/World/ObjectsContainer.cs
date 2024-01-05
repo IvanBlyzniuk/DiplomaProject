@@ -2,21 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace World
+namespace App.World
 {
     public class ObjectsContainer : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        [SerializeField] private CameraTarget cameraFollowTarget;
 
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
+        public CameraTarget CameraFollowTarget => cameraFollowTarget;
     }
 }
 

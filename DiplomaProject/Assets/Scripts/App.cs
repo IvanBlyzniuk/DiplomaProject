@@ -1,16 +1,20 @@
+using App.World;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using World;
 
-public class App : MonoBehaviour
+namespace App
 {
-
-    [SerializeField] private ObjectsContainer objectsContainer;
-
-    void Start()
+    public class App : MonoBehaviour
     {
-        
-    }
 
+        [SerializeField] private ObjectsContainer objectsContainer;
+        [SerializeField] private InputSystem inputSystem;
+
+        void Start()
+        {
+            inputSystem.Init(objectsContainer.CameraFollowTarget);
+        }
+
+    }
 }
