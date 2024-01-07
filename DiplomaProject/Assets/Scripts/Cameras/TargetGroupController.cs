@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace App.Cameras
 {
-    public class TargetController : MonoBehaviour
+    public class TargetGroupController : MonoBehaviour
     {
 
         [SerializeField]
