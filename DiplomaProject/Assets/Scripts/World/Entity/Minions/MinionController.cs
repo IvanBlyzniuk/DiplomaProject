@@ -10,6 +10,9 @@ namespace App.World.Entity.Minion
         private SteeringManager steeringManager;
 
         [SerializeField] private GameObject seekTarget;
+        [SerializeField] private GameObject fleeTarget;
+        [SerializeField] private GameObject evadeTarget;
+        [SerializeField] private bool shouldWander;
 
         void Start()
         {
@@ -17,7 +20,14 @@ namespace App.World.Entity.Minion
         }
         void Update()
         {
-            steeringManager.Seek(seekTarget, 1f);
+            if(seekTarget != null)
+                steeringManager.Seek(seekTarget, 1f);
+            if(fleeTarget != null)
+                steeringManager.Flee(fleeTarget);
+            if(evadeTarget != null)
+                steeringManager.Evade(evadeTarget);
+            if (shouldWander)
+                steeringManager.Wander(steeringManager.MaxVelocity /2 , steeringManager.MaxVelocity / 3, 10);
         }
     }
 }
