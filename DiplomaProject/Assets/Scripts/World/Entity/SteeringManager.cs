@@ -1,3 +1,4 @@
+using App.World.Entity.Minion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace App.World.Entity
         private float wanderAngle = 0f;
         private Vector2 steering;
         private Rigidbody2D rigidBody;
+        private MinionController[] minions;
 
         [SerializeField] private float maxVelocity;
         [SerializeField] private float maxForce; //static const?
@@ -23,6 +25,7 @@ namespace App.World.Entity
 
         void Start()
         {
+            minions = FindObjectsOfType<MinionController>();
             rigidBody = GetComponent<Rigidbody2D>();
             steering = Vector2.zero;
         }
@@ -48,13 +51,10 @@ namespace App.World.Entity
             }
         }
 
-        public void Seek(GameObject target, float slowingRadius = 0f)
+        public void Seek(Vector3 targetPosition, float slowingRadius = 0f)
         {
-            lastSeekTarget = target;
-            lastSeekTargetSlowingRadius = slowingRadius;
-
             Vector2 force;
-            Vector2 desired = (target.transform.position - transform.position);
+            Vector2 desired = (targetPosition - transform.position);
             float distance = desired.magnitude;
             desired.Normalize();
             if (distance <= slowingRadius)
@@ -69,6 +69,13 @@ namespace App.World.Entity
             force = desired - rigidBody.velocity;
 
             steering += force;
+        }
+
+        public void Seek(GameObject target, float slowingRadius = 0f)
+        {
+            lastSeekTarget = target;
+            lastSeekTargetSlowingRadius = slowingRadius;
+            Seek(target.transform.position, slowingRadius);
         }
 
         public void Flee(GameObject target)
@@ -109,18 +116,51 @@ namespace App.World.Entity
             steering += wanderForce;
         }
 
-        public void Evade(GameObject target)
+        public void Evade(Rigidbody2D target)
         {
-            Rigidbody2D targetBody = target.GetComponent<Rigidbody2D>();
-            if(targetBody == null)
-            {
-                Debug.LogWarning("Avoiding target with no rigidbody");
-                return;
-            }
             Vector2 distance = target.transform.position - transform.position;
             float timeAhead = distance.magnitude / maxVelocity;
-            Vector2 futurePosition = (Vector2)target.transform.position + targetBody.velocity * timeAhead;
+            Vector2 futurePosition = (Vector2)target.transform.position + target.velocity * timeAhead;
             Flee(futurePosition);
+        }
+
+        public void HandleSeparation()
+        {
+            Vector3 force = Vector3.zero;
+            int neighborCount = 0;
+            foreach (var minion in minions)
+            {
+                if (minion.gameObject != gameObject 
+                    && Vector2.Distance(transform.position, minion.transform.position) <= minion.SeparationRadius)
+                {
+                    force += minion.transform.position - transform.position;
+                    neighborCount++;
+                }
+            }
+            if (neighborCount > 0)
+            {
+                force /= -neighborCount;
+            }
+            force.Normalize();
+            force *= minions[0].SeparationSpeed;
+            steering += (Vector2)force;
+        }
+
+        public void FollowLeader(Rigidbody2D leader, float leaderBehindDist, float leaderSightRadius, float slowingRadius = 0f)
+        {
+            Vector2 force = Vector2.zero;
+            Vector2 tv = leader.velocity.normalized * leaderBehindDist;
+            Vector2 behindPosition = leader.position - tv;
+            Vector2 aheadPosition = leader.position + tv;
+
+            if(Vector2.Distance(aheadPosition, transform.position) <= leaderSightRadius || Vector2.Distance(leader.transform.position, transform.position) <= leaderSightRadius)
+            {
+                Evade(leader);
+            }
+
+            Seek(behindPosition, slowingRadius);
+
+            HandleSeparation();
         }
     }
 }
