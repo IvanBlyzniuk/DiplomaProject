@@ -18,6 +18,8 @@ namespace App.World.Entity.Minion
         [SerializeField] private GameObject evadeTarget;
         [SerializeField] private GameObject leader;
         [SerializeField] private bool shouldWander;
+        [SerializeField] private float seeAheadDistance;
+        [SerializeField] private float avoidForceMultiplier;
 
         public float SeparationRadius => separationRadius;
         public float SeparationSpeed => separationSpeed;
@@ -32,6 +34,7 @@ namespace App.World.Entity.Minion
         }
         void Update()
         {
+            steeringManager.AvoidCollisions(seeAheadDistance, avoidForceMultiplier);
             if(seekTarget != null)
                 steeringManager.Seek(seekTarget, 1f);
             if(fleeTarget != null)
@@ -39,7 +42,7 @@ namespace App.World.Entity.Minion
             if(evadeTarget != null)
                 steeringManager.Evade(evadeTargetBody);
             if (leader != null)
-                steeringManager.FollowLeader(leaderBody, 2f, 1f, 1f);
+                steeringManager.FollowLeader(leaderBody, 2f, 1f, separationRadius, 1f);
             if (shouldWander)
                 steeringManager.Wander(steeringManager.MaxVelocity /2 , steeringManager.MaxVelocity / 3, 10);
         }

@@ -6,6 +6,7 @@ using UnityEngine;
 namespace App.World.Entity
 {
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(CircleCollider2D))]
     public class SteeringManager : MonoBehaviour
     {
         #region debug_utils
@@ -17,6 +18,7 @@ namespace App.World.Entity
         private Vector2 steering;
         private Rigidbody2D rigidBody;
         private MinionController[] minions;
+        private CircleCollider2D circleCollider;
 
         [SerializeField] private float maxVelocity;
         [SerializeField] private float maxForce; //static const?
@@ -27,6 +29,7 @@ namespace App.World.Entity
         {
             minions = FindObjectsOfType<MinionController>();
             rigidBody = GetComponent<Rigidbody2D>();
+            circleCollider = GetComponent<CircleCollider2D>();
             steering = Vector2.zero;
         }
 
@@ -36,6 +39,7 @@ namespace App.World.Entity
             steering = Vector2.ClampMagnitude(steering, maxForce);
             rigidBody.AddForce(steering);
             rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxVelocity);
+            steering = Vector2.zero;
         }
 
         private void OnDrawGizmos()
@@ -124,14 +128,14 @@ namespace App.World.Entity
             Flee(futurePosition);
         }
 
-        public void HandleSeparation()
+        public void HandleSeparation(float separationRadius)
         {
             Vector3 force = Vector3.zero;
             int neighborCount = 0;
             foreach (var minion in minions)
             {
                 if (minion.gameObject != gameObject 
-                    && Vector2.Distance(transform.position, minion.transform.position) <= minion.SeparationRadius)
+                    && Vector2.Distance(transform.position, minion.transform.position) <= separationRadius)
                 {
                     force += minion.transform.position - transform.position;
                     neighborCount++;
@@ -146,7 +150,7 @@ namespace App.World.Entity
             steering += (Vector2)force;
         }
 
-        public void FollowLeader(Rigidbody2D leader, float leaderBehindDist, float leaderSightRadius, float slowingRadius = 0f)
+        public void FollowLeader(Rigidbody2D leader, float leaderBehindDist, float leaderSightRadius, float separationRadius, float slowingRadius = 0f)
         {
             Vector2 force = Vector2.zero;
             Vector2 tv = leader.velocity.normalized * leaderBehindDist;
@@ -160,7 +164,20 @@ namespace App.World.Entity
 
             Seek(behindPosition, slowingRadius);
 
-            HandleSeparation();
+            HandleSeparation(separationRadius);
+        }
+
+        public void AvoidCollisions(float maxSeeAheadDistance, float avoidForceMultiplier)
+        {
+            float scalingFactor = rigidBody.velocity.magnitude / maxVelocity;
+            Vector2 movingDirection = rigidBody.velocity.normalized * maxSeeAheadDistance * scalingFactor;
+            RaycastHit2D raycastHit = Physics2D.CircleCast(transform.position, circleCollider.radius, rigidBody.velocity, maxSeeAheadDistance * scalingFactor, LayerMask.GetMask("Obstacles"));
+            if (!raycastHit)
+                return;
+            Vector2 avoidance = (Vector2)transform.position + movingDirection - (Vector2)raycastHit.transform.position;
+            avoidance.Normalize();
+            avoidance *= maxForce * avoidForceMultiplier;
+            steering += avoidance;
         }
     }
 }
