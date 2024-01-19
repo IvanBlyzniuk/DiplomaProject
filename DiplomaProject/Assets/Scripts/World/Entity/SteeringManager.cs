@@ -20,8 +20,8 @@ namespace App.World.Entity
         private MinionController[] minions;
         private CircleCollider2D circleCollider;
 
-        [SerializeField] private float maxVelocity;
-        [SerializeField] private float maxForce; //static const?
+        private float maxVelocity;
+        private float maxForce; //static const?
 
         public float MaxVelocity => maxVelocity;
 
@@ -31,6 +31,12 @@ namespace App.World.Entity
             rigidBody = GetComponent<Rigidbody2D>();
             circleCollider = GetComponent<CircleCollider2D>();
             steering = Vector2.zero;
+        }
+
+        public void Init(float maxVelocity, float maxForce)
+        {
+            this.maxVelocity = maxVelocity;
+            this.maxForce = maxForce;
         }
 
 
@@ -128,7 +134,7 @@ namespace App.World.Entity
             Flee(futurePosition);
         }
 
-        public void HandleSeparation(float separationRadius)
+        public void HandleSeparation(float separationRadius, float separationSpeed)
         {
             Vector3 force = Vector3.zero;
             int neighborCount = 0;
@@ -146,11 +152,11 @@ namespace App.World.Entity
                 force /= -neighborCount;
             }
             force.Normalize();
-            force *= minions[0].SeparationSpeed;
+            force *= separationSpeed;
             steering += (Vector2)force;
         }
 
-        public void FollowLeader(Rigidbody2D leader, float leaderBehindDist, float leaderSightRadius, float separationRadius, float slowingRadius = 0f)
+        public void FollowLeader(Rigidbody2D leader, float leaderBehindDist, float leaderSightRadius, float separationRadius, float separationSpeed, float slowingRadius = 0f)
         {
             Vector2 force = Vector2.zero;
             Vector2 tv = leader.velocity.normalized * leaderBehindDist;
@@ -164,10 +170,10 @@ namespace App.World.Entity
 
             Seek(behindPosition, slowingRadius);
 
-            HandleSeparation(separationRadius);
+            HandleSeparation(separationRadius, separationSpeed);
         }
 
-        public void AvoidCollisions(float maxSeeAheadDistance, float avoidForceMultiplier)
+        public void AvoidCollisions(float maxSeeAheadDistance, float maxAvoidForce)
         {
             float scalingFactor = rigidBody.velocity.magnitude / maxVelocity;
             Vector2 movingDirection = rigidBody.velocity.normalized * maxSeeAheadDistance * scalingFactor;
@@ -176,7 +182,7 @@ namespace App.World.Entity
                 return;
             Vector2 avoidance = (Vector2)transform.position + movingDirection - (Vector2)raycastHit.transform.position;
             avoidance.Normalize();
-            avoidance *= maxForce * avoidForceMultiplier;
+            avoidance *= maxAvoidForce;
             steering += avoidance;
         }
     }

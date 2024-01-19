@@ -156,13 +156,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minionParams: {fileID: 11400000, guid: b509b7e1075db1847a859b4aa1ca7ec1, type: 2}
   seekTarget: {fileID: 131865283}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
   leader: {fileID: 0}
   shouldWander: 0
-  seeAheadDistance: 5
-  avoidForceMultiplier: 2
 --- !u!114 &98353589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,8 +174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff5c3f9f7237414dbbfe7dfea66dd5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 3
-  maxForce: 2
 --- !u!50 &98353590
 Rigidbody2D:
   serializedVersion: 4
@@ -339,13 +336,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minionParams: {fileID: 0}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
   leader: {fileID: 98353587}
   shouldWander: 0
-  seeAheadDistance: 0
-  avoidForceMultiplier: 0
 --- !u!114 &107583633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,8 +354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff5c3f9f7237414dbbfe7dfea66dd5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 4
-  maxForce: 0.7
 --- !u!50 &107583634
 Rigidbody2D:
   serializedVersion: 4
@@ -553,13 +547,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minionParams: {fileID: 0}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
   leader: {fileID: 98353587}
   shouldWander: 0
-  seeAheadDistance: 0
-  avoidForceMultiplier: 0
 --- !u!114 &923361514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -572,8 +565,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff5c3f9f7237414dbbfe7dfea66dd5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 4
-  maxForce: 0.7
 --- !u!50 &923361515
 Rigidbody2D:
   serializedVersion: 4
@@ -767,13 +758,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minionParams: {fileID: 0}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
   leader: {fileID: 98353587}
   shouldWander: 0
-  seeAheadDistance: 0
-  avoidForceMultiplier: 0
 --- !u!114 &1357166917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -786,8 +776,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff5c3f9f7237414dbbfe7dfea66dd5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 4
-  maxForce: 0.7
 --- !u!50 &1357166918
 Rigidbody2D:
   serializedVersion: 4
@@ -950,13 +938,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minionParams: {fileID: 0}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
   leader: {fileID: 98353587}
   shouldWander: 0
-  seeAheadDistance: 0
-  avoidForceMultiplier: 0
 --- !u!114 &1529387771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,8 +956,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff5c3f9f7237414dbbfe7dfea66dd5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 4
-  maxForce: 0.7
 --- !u!50 &1529387772
 Rigidbody2D:
   serializedVersion: 4
@@ -1504,13 +1489,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minionParams: {fileID: 0}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
   leader: {fileID: 98353587}
   shouldWander: 0
-  seeAheadDistance: 0
-  avoidForceMultiplier: 0
 --- !u!114 &2029890762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1523,8 +1507,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff5c3f9f7237414dbbfe7dfea66dd5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVelocity: 4
-  maxForce: 0.7
 --- !u!50 &2029890763
 Rigidbody2D:
   serializedVersion: 4
