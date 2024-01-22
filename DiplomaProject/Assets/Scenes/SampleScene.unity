@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 98353589}
   - component: {fileID: 98353588}
   - component: {fileID: 98353593}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Minion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minionParams: {fileID: 11400000, guid: b509b7e1075db1847a859b4aa1ca7ec1, type: 2}
-  seekTarget: {fileID: 131865283}
+  seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
   leader: {fileID: 0}
@@ -317,13 +317,13 @@ GameObject:
   - component: {fileID: 107583633}
   - component: {fileID: 107583632}
   - component: {fileID: 107583637}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Follower (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &107583632
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,11 +336,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minionParams: {fileID: 0}
+  minionParams: {fileID: 11400000, guid: b509b7e1075db1847a859b4aa1ca7ec1, type: 2}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
-  leader: {fileID: 98353587}
+  leader: {fileID: 0}
   shouldWander: 0
 --- !u!114 &107583633
 MonoBehaviour:
@@ -514,6 +514,74 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &793218170
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 793218173}
+  - component: {fileID: 793218172}
+  - component: {fileID: 793218171}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &793218171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793218170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &793218172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793218170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &793218173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793218170}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &923361512
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,13 +596,13 @@ GameObject:
   - component: {fileID: 923361514}
   - component: {fileID: 923361513}
   - component: {fileID: 923361518}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Follower (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &923361513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,11 +615,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minionParams: {fileID: 0}
+  minionParams: {fileID: 11400000, guid: b509b7e1075db1847a859b4aa1ca7ec1, type: 2}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
-  leader: {fileID: 98353587}
+  leader: {fileID: 0}
   shouldWander: 0
 --- !u!114 &923361514
 MonoBehaviour:
@@ -725,6 +793,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1254691067 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8349677466439661876, guid: cacaeb60917ddca42a9c5b45a8bd54ef, type: 3}
+  m_PrefabInstance: {fileID: 929592138198482886}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f827a743c37c19040977c872679cf179, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1357166915
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,13 +818,13 @@ GameObject:
   - component: {fileID: 1357166917}
   - component: {fileID: 1357166916}
   - component: {fileID: 1357166921}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Follower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1357166916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -758,11 +837,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minionParams: {fileID: 0}
+  minionParams: {fileID: 11400000, guid: b509b7e1075db1847a859b4aa1ca7ec1, type: 2}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
-  leader: {fileID: 98353587}
+  leader: {fileID: 0}
   shouldWander: 0
 --- !u!114 &1357166917
 MonoBehaviour:
@@ -919,13 +998,13 @@ GameObject:
   - component: {fileID: 1529387771}
   - component: {fileID: 1529387770}
   - component: {fileID: 1529387775}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Follower (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1529387770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,11 +1017,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minionParams: {fileID: 0}
+  minionParams: {fileID: 11400000, guid: b509b7e1075db1847a859b4aa1ca7ec1, type: 2}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
-  leader: {fileID: 98353587}
+  leader: {fileID: 0}
   shouldWander: 0
 --- !u!114 &1529387771
 MonoBehaviour:
@@ -1470,13 +1549,13 @@ GameObject:
   - component: {fileID: 2029890762}
   - component: {fileID: 2029890761}
   - component: {fileID: 2029890766}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Follower (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2029890761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1489,11 +1568,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fefa9730690ac47aa3de1e4446e62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minionParams: {fileID: 0}
+  minionParams: {fileID: 11400000, guid: b509b7e1075db1847a859b4aa1ca7ec1, type: 2}
   seekTarget: {fileID: 0}
   fleeTarget: {fileID: 0}
   evadeTarget: {fileID: 0}
-  leader: {fileID: 98353587}
+  leader: {fileID: 0}
   shouldWander: 0
 --- !u!114 &2029890762
 MonoBehaviour:
@@ -1937,6 +2016,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0edaab968e6b39848ac2f05833d2e181, type: 3}
+--- !u!20 &867609464909464901 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 4996648153737150299, guid: 0edaab968e6b39848ac2f05833d2e181, type: 3}
+  m_PrefabInstance: {fileID: 867609464909464900}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &929592138198482886
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1948,10 +2032,6 @@ PrefabInstance:
     - target: {fileID: 1724370055348892628, guid: cacaeb60917ddca42a9c5b45a8bd54ef, type: 3}
       propertyPath: m_Name
       value: App
-      objectReference: {fileID: 0}
-    - target: {fileID: 3757285312432116877, guid: cacaeb60917ddca42a9c5b45a8bd54ef, type: 3}
-      propertyPath: enableEndgePan
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6494818400103317665, guid: cacaeb60917ddca42a9c5b45a8bd54ef, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1997,6 +2077,10 @@ PrefabInstance:
       propertyPath: objectsContainer
       value: 
       objectReference: {fileID: 1551366287}
+    - target: {fileID: 7230367365889657090, guid: cacaeb60917ddca42a9c5b45a8bd54ef, type: 3}
+      propertyPath: unitSelectionSystem
+      value: 
+      objectReference: {fileID: 1254691067}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2054,6 +2138,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4192851676336527050, guid: 5f3e6dbfd0f18224d95c25484789f5f6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6994723975707563269, guid: 5f3e6dbfd0f18224d95c25484789f5f6, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 867609464909464901}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2079,3 +2171,4 @@ SceneRoots:
   - {fileID: 2134583641}
   - {fileID: 2062666805}
   - {fileID: 1824328304}
+  - {fileID: 793218173}

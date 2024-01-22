@@ -1,3 +1,4 @@
+using App.Systems;
 using App.World;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,10 +11,12 @@ namespace App
 
         [SerializeField] private ObjectsContainer objectsContainer;
         [SerializeField] private InputSystem inputSystem;
+        [SerializeField] private UnitSelectionSystem unitSelectionSystem;
 
         void Start()
         {
-            inputSystem.Init(objectsContainer.CameraFollowTarget);
+            unitSelectionSystem.Init(objectsContainer.MainCamera, objectsContainer.SelectorImage);
+            inputSystem.Init(unitSelectionSystem, objectsContainer.MainCamera, objectsContainer.CameraFollowTarget);
         }
 
     }
