@@ -1,6 +1,8 @@
+using App.World.Entity.Minion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace App.Systems
 {
@@ -10,6 +12,11 @@ namespace App.Systems
         private Camera mainCamera;
         private Vector2 startPos;
         private Vector2 curPos;
+        private HashSet<MinionController> selectedMinions = new HashSet<MinionController>();
+
+        public ISet<MinionController> SelectedMinions => selectedMinions;
+        public bool ShouldAddSelection { get; set; }
+
         public void Init(Camera mainCamera, RectTransform selectorImage)
         {
             this.mainCamera = mainCamera;
@@ -34,12 +41,10 @@ namespace App.Systems
             selectorImage.localPosition = center;
         }
 
-        public void OnMouseReleased(bool addSelection)
+        public void OnMouseReleased()
         {
             Vector2 worldStartPos = mainCamera.ScreenToWorldPoint(startPos);
             Vector2 worldCurPos = mainCamera.ScreenToWorldPoint(curPos);
-
-            //Debug.Log($"--------------");
 
             float width = Mathf.Abs(worldCurPos.x - worldStartPos.x);
             float height = Mathf.Abs(worldCurPos.y - worldStartPos.y);
@@ -47,15 +52,37 @@ namespace App.Systems
             Vector2 size = new Vector2(width, height);
             Vector2 center = (worldStartPos + worldCurPos) / 2f;
             selectorImage.gameObject.SetActive(false);
-            var selectedMinions = Physics2D.OverlapBoxAll(center, size, 0f, LayerMask.GetMask("Minions"));
+            var minionsToSelect = Physics2D.OverlapBoxAll(center, size, 0f, LayerMask.GetMask("Minions"));
 
-            foreach (var minion in selectedMinions)
+            if(!ShouldAddSelection)
+                selectedMinions.Clear();
+
+            foreach (var minionCollider in minionsToSelect)
             {
-                //Debug.Log(minion.gameObject.name);
-                //if shift is pressed selection += selectedMinions
-                //else selection = selectedMinions
+                var minion = minionCollider.gameObject.GetComponent<MinionController>();
+                if(minion == null)
+                {
+                    Debug.LogWarning("Selecting object with no MinionController attached");
+                    continue;
+                }
+                if(ShouldAddSelection)
+                {
+                    if(selectedMinions.Contains(minion))
+                    {
+                        selectedMinions.Remove(minion);
+                    }
+                    else
+                    {
+                        selectedMinions.Add(minion);
+                    }
+                }
+                else
+                {
+                    selectedMinions.Add(minion);
+                }
             }
 
+            Debug.Log(selectedMinions.Count);
         }
     }
 }

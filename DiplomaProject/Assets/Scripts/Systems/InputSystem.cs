@@ -27,6 +27,15 @@ namespace App.Systems
         {
             HandleCameraMovement();
             HandleMouseInput();
+            HandleKeyboardInput();
+        }
+
+        private void HandleKeyboardInput()
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                unitSelectionSystem.ShouldAddSelection = true;
+            if (Input.GetKeyUp(KeyCode.LeftShift))
+                unitSelectionSystem.ShouldAddSelection = false;
         }
 
         private void HandleMouseInput()
@@ -36,7 +45,7 @@ namespace App.Systems
             if (Input.GetMouseButton(0))
                 unitSelectionSystem.OnMouseHold(Input.mousePosition);
             if(Input.GetMouseButtonUp(0))
-                unitSelectionSystem.OnMouseReleased(false); //false -> shiftIsPressed()
+                unitSelectionSystem.OnMouseReleased();
         }
 
         private void HandleCameraMovement()

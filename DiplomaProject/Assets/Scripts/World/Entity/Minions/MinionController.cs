@@ -43,6 +43,12 @@ namespace App.World.Entity.Minion
             if (shouldWander)
                 steeringManager.Wander(minionParams.maxVelocity /2 , minionParams.maxVelocity / 3, 10);
         }
+
+        //For debugging purposes
+        public override string ToString()
+        {
+            return gameObject.name;
+        }
     }
 }
 
