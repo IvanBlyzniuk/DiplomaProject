@@ -10,6 +10,7 @@ namespace App.Systems
     {
         private RectTransform selectorImage;
         private Camera mainCamera;
+        private bool isSelecting;
         private Vector2 startPos;
         private Vector2 curPos;
         private HashSet<MinionController> selectedMinions = new HashSet<MinionController>();
@@ -21,16 +22,20 @@ namespace App.Systems
         {
             this.mainCamera = mainCamera;
             this.selectorImage = selectorImage;
+            isSelecting = false;
         }
 
         public void OnMousePressed(Vector2 cursorPosition)
         {
+            isSelecting = true;
             startPos = cursorPosition;
             selectorImage.gameObject.SetActive(true);
         }
 
         public void OnMouseHold(Vector2 cursorPosition)
         {
+            if (!isSelecting) 
+                return;
             curPos = cursorPosition;
             float width = Mathf.Abs(curPos.x - startPos.x);
             float height = Mathf.Abs(curPos.y - startPos.y);
@@ -43,6 +48,8 @@ namespace App.Systems
 
         public void OnMouseReleased()
         {
+            if (!isSelecting)
+                return;
             Vector2 worldStartPos = mainCamera.ScreenToWorldPoint(startPos);
             Vector2 worldCurPos = mainCamera.ScreenToWorldPoint(curPos);
 
@@ -81,7 +88,7 @@ namespace App.Systems
                     selectedMinions.Add(minion);
                 }
             }
-
+            isSelecting = false;
             Debug.Log(selectedMinions.Count);
         }
     }

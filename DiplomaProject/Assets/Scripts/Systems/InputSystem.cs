@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace App.Systems
 {
@@ -11,16 +12,48 @@ namespace App.Systems
 
         private CameraTarget cameraTarget;
         private UnitSelectionSystem unitSelectionSystem;
+        private FlagSystem flagSystem;
         private Camera mainCamera;
+        private InputStates inputState;
+        private Action<Vector2> lmbDown;
+        private Action<Vector2> lmbHold;
+        private Action<Vector2> mouseMoved;
+        private Action lmbUp;
 
         [SerializeField] private float edgeSize = 10f;
         [SerializeField] private bool enableEndgePan = true;
 
-        public void Init(UnitSelectionSystem unitSelectionSystem, Camera mainCamera, CameraTarget cameraTarget)
+        public InputStates InputState
+        {
+            get => inputState;
+            set
+            {
+                inputState = value;
+                switch(inputState)
+                {
+                    case InputStates.Empty:
+                        lmbDown = unitSelectionSystem.OnMousePressed;
+                        lmbHold = unitSelectionSystem.OnMouseHold;
+                        lmbUp = unitSelectionSystem.OnMouseReleased;
+                        mouseMoved = null;
+                        break;
+                    case InputStates.PlacingFlag:
+                        lmbDown = flagSystem.OnMousePressed;
+                        mouseMoved = flagSystem.OnMouseMoved;
+                        lmbHold = null;
+                        lmbUp = null;
+                        break;
+                }
+            }
+        }
+
+        public void Init(UnitSelectionSystem unitSelectionSystem, FlagSystem flagSystem, Camera mainCamera, CameraTarget cameraTarget)
         {
             this.unitSelectionSystem = unitSelectionSystem;
+            this.flagSystem = flagSystem;
             this.mainCamera = mainCamera;
             this.cameraTarget = cameraTarget;
+            InputState = InputStates.Empty;
         }
 
         void Update()
@@ -40,12 +73,13 @@ namespace App.Systems
 
         private void HandleMouseInput()
         {
-            if (Input.GetMouseButtonDown(0))
-                unitSelectionSystem.OnMousePressed(Input.mousePosition);
+            mouseMoved?.Invoke(Input.mousePosition);
+            if (!EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0))
+                lmbDown?.Invoke(Input.mousePosition); //unitSelectionSystem.OnMousePressed(Input.mousePosition);
             if (Input.GetMouseButton(0))
-                unitSelectionSystem.OnMouseHold(Input.mousePosition);
-            if(Input.GetMouseButtonUp(0))
-                unitSelectionSystem.OnMouseReleased();
+                lmbHold?.Invoke(Input.mousePosition); //unitSelectionSystem.OnMouseHold(Input.mousePosition);
+            if (Input.GetMouseButtonUp(0))
+                lmbUp?.Invoke(); //unitSelectionSystem.OnMouseReleased();
         }
 
         private void HandleCameraMovement()
@@ -77,6 +111,12 @@ namespace App.Systems
 
             cameraTarget.Move(cameraMovementDirection);
         }
+    }
+
+    public enum InputStates
+    {
+        PlacingFlag,
+        Empty,
     }
 }
 

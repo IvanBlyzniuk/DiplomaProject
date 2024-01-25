@@ -12,12 +12,18 @@ namespace App
         [SerializeField] private ObjectsContainer objectsContainer;
         [SerializeField] private InputSystem inputSystem;
         [SerializeField] private UnitSelectionSystem unitSelectionSystem;
+        [SerializeField] private FlagSystem flagSystem;
 
         void Start()
         {
             unitSelectionSystem.Init(objectsContainer.MainCamera, objectsContainer.SelectorImage);
-            inputSystem.Init(unitSelectionSystem, objectsContainer.MainCamera, objectsContainer.CameraFollowTarget);
-        }
+            inputSystem.Init(unitSelectionSystem, flagSystem, objectsContainer.MainCamera, objectsContainer.CameraFollowTarget);
+            flagSystem.Init(inputSystem, objectsContainer.FlagPlacementPreview, objectsContainer.MainCamera);
 
+            foreach (var flagSelector in objectsContainer.FlagSelectors)
+            {
+                flagSelector.Init(flagSystem);
+            }
+        }
     }
 }
