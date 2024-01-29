@@ -1,3 +1,4 @@
+using App.World.Entity.Flags;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,24 +9,27 @@ namespace App.Systems
     public class FlagSystem : MonoBehaviour, IPlacementSystem
     {
         private static readonly Color halfTransparrentYellow = new Color(1f, 0.92f, 0.016f, 0.5f);
+        private static readonly Color halfTransparrentRed = new Color(1f, 0f, 0f, 0.5f);
 
         private InputSystem inputSystem;
         private SpriteRenderer preview;
-        private GameObject selectedFlag;
+        private IFlag selectedFlag;
         private Camera mainCamera;
+        private UnitSelectionSystem unitSelectionSystem;
 
         public GameObject ObjectToPLace 
         { 
-            get => selectedFlag; 
+            get => selectedFlag.gameObject; 
             set
             {
-                selectedFlag = value;
+                
                 if (value == null)
                 {
                     preview.gameObject.SetActive(false);
                     return;
                 }
-                SpriteRenderer selectedSpriteRenderer = selectedFlag.GetComponent<SpriteRenderer>();
+                selectedFlag = value.GetComponent<IFlag>();
+                SpriteRenderer selectedSpriteRenderer = selectedFlag.gameObject.GetComponent<SpriteRenderer>();
                 if(selectedSpriteRenderer == null)
                 {
                     Debug.Log("Selected building doesn't contain SpriteRenderer");
@@ -39,9 +43,10 @@ namespace App.Systems
             }
         }
 
-        public void Init(InputSystem inputSystem, SpriteRenderer preview, Camera mainCamera)
+        public void Init(InputSystem inputSystem, UnitSelectionSystem unitSelectionSystem, SpriteRenderer preview, Camera mainCamera)
         {
             this.inputSystem = inputSystem;
+            this.unitSelectionSystem = unitSelectionSystem;
             this.preview = preview;
             this.mainCamera = mainCamera;
             preview.gameObject.SetActive(false);
@@ -49,18 +54,30 @@ namespace App.Systems
 
         public void OnMouseMoved(Vector2 cursorPosition)
         {
+            if (selectedFlag == null)
+                return;
             Vector2 cursorWorldPosition = mainCamera.ScreenToWorldPoint(cursorPosition);
             preview.transform.position = cursorWorldPosition;
+            if(!selectedFlag.CheckPlacementValidity(cursorWorldPosition))
+            {
+                preview.color = halfTransparrentRed;
+            }
+            else
+            {
+                preview.color = halfTransparrentYellow;
+            }
         }
 
         public void OnMousePressed(Vector2 cursorPosition)
         {
             preview.gameObject.SetActive(false);
             Vector2 cursorWorldPosition = mainCamera.ScreenToWorldPoint(cursorPosition);
-            Debug.Log(cursorWorldPosition);
+            if (!selectedFlag.CheckPlacementValidity(cursorWorldPosition))
+                return;
             inputSystem.InputState = InputStates.Empty;
-            Instantiate(selectedFlag, cursorWorldPosition, Quaternion.identity);
-            //Flag logick
+            GameObject flagObject = Instantiate(selectedFlag.gameObject, cursorWorldPosition, Quaternion.identity);
+            IFlag placedFlag = flagObject.GetComponent<IFlag>();
+            placedFlag.AddOrder(unitSelectionSystem.SelectedMinions);
         }
     }
 }

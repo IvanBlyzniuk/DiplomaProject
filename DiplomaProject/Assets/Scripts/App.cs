@@ -18,7 +18,7 @@ namespace App
         {
             unitSelectionSystem.Init(objectsContainer.MainCamera, objectsContainer.SelectorImage);
             inputSystem.Init(unitSelectionSystem, flagSystem, objectsContainer.MainCamera, objectsContainer.CameraFollowTarget);
-            flagSystem.Init(inputSystem, objectsContainer.FlagPlacementPreview, objectsContainer.MainCamera);
+            flagSystem.Init(inputSystem, unitSelectionSystem, objectsContainer.FlagPlacementPreview, objectsContainer.MainCamera);
 
             foreach (var flagSelector in objectsContainer.FlagSelectors)
             {
