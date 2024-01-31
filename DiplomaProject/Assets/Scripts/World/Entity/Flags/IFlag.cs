@@ -11,6 +11,7 @@ namespace App.World.Entity.Flags
         //public OrderType OrderType => orderType;
         public bool CheckPlacementValidity(Vector2 position);
         public void AddOrder(ISet<MinionController> minions);
+        public void RemoveOrder();
 
         public GameObject gameObject { get; }
     }

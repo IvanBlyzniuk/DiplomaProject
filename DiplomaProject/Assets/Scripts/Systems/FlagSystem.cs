@@ -1,4 +1,5 @@
 using App.World.Entity.Flags;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,6 +51,22 @@ namespace App.Systems
             this.preview = preview;
             this.mainCamera = mainCamera;
             preview.gameObject.SetActive(false);
+        }
+
+        public void TryDeleteFlag(Vector2 cursorPosition)
+        {
+            Vector2 cursorWorldPosition = mainCamera.ScreenToWorldPoint(cursorPosition);
+            var flagCollider = Physics2D.OverlapPoint(cursorWorldPosition, LayerMask.GetMask("Flags"));
+            if (flagCollider == null)
+                return;
+            IFlag flag = flagCollider.gameObject.GetComponent<IFlag>();
+            if (flag == null)
+            {
+                Debug.LogWarning("Trying ot delete flag with no IFlag component");
+                return;
+            }
+            flag.RemoveOrder();
+            Destroy(flag.gameObject);
         }
 
         public void OnMouseMoved(Vector2 cursorPosition)

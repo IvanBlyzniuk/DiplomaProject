@@ -10,7 +10,6 @@ namespace App.World.Entity.Minion
     {
         private SteeringManager steeringManager;
         private Rigidbody2D evadeTargetBody;
-        private Rigidbody2D leaderBody;
         private List<GameObject> seekTargets = new List<GameObject>();
         private List<GameObject> fleeTargets = new List<GameObject>();
         private List<Rigidbody2D> evadeTargets = new List<Rigidbody2D>();
@@ -21,6 +20,12 @@ namespace App.World.Entity.Minion
         //[Header("Debug fields")]
         //[SerializeField] private GameObject leader;
         //[SerializeField] private bool shouldWander;
+
+        public List<GameObject> SeekTargets => seekTargets;
+        public List<GameObject> FleeTargets => fleeTargets;
+        public List<Rigidbody2D> EvadeTargets => evadeTargets;
+
+        public Rigidbody2D Leader { get; set; }
 
         void Start()
         {
@@ -53,32 +58,35 @@ namespace App.World.Entity.Minion
                 if (Vector2.Distance(transform.position, evadeTarget.transform.position) < minionParams.maxFleeDistance)
                     steeringManager.Evade(evadeTarget);
             }
-            //if (leader != null)
-            //    steeringManager.FollowLeader(leaderBody, 2f, 1f, minionParams.separationRadius, minionParams.separationSpeed, 1f);
+
+            if(Leader != null && Leader.gameObject != gameObject)
+            {
+                steeringManager.FollowLeader(Leader, 2f, 1f, minionParams.separationRadius, minionParams.separationSpeed, 1f);
+            }
             //if (shouldWander)
             //    steeringManager.Wander(minionParams.maxVelocity /2 , minionParams.maxVelocity / 3, 10);
         }
 
-        public void AddSeekTarget(GameObject target)
-        {
-            seekTargets.Add(target);
-        }
+        //public void AddSeekTarget(GameObject target)
+        //{
+        //    seekTargets.Add(target);
+        //}
 
-        internal void AddFleeTarget(GameObject target)
-        {
-            fleeTargets.Add(target);
-        }
+        //internal void AddFleeTarget(GameObject target)
+        //{
+        //    fleeTargets.Add(target);
+        //}
 
-        internal void AddEvadeTarget(GameObject target)
-        {
-            var targetBody = target.GetComponent<Rigidbody2D>();
-            if (targetBody == null)
-            {
-                Debug.LogWarning("Trying to avoid enemy with no RigidBody");
-                return;
-            }
-            evadeTargets.Add(targetBody);
-        }
+        //internal void AddEvadeTarget(GameObject target)
+        //{
+        //    var targetBody = target.GetComponent<Rigidbody2D>();
+        //    if (targetBody == null)
+        //    {
+        //        Debug.LogWarning("Trying to avoid enemy with no RigidBody");
+        //        return;
+        //    }
+        //    evadeTargets.Add(targetBody);
+        //}
 
         //For debugging purposes
         public override string ToString()

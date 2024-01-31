@@ -18,6 +18,7 @@ namespace App.Systems
         private Action<Vector2> lmbDown;
         private Action<Vector2> lmbHold;
         private Action<Vector2> mouseMoved;
+        private Action<Vector2> rmbDown;
         private Action lmbUp;
 
         [SerializeField] private float edgeSize = 10f;
@@ -35,11 +36,13 @@ namespace App.Systems
                         lmbDown = unitSelectionSystem.OnMousePressed;
                         lmbHold = unitSelectionSystem.OnMouseHold;
                         lmbUp = unitSelectionSystem.OnMouseReleased;
+                        rmbDown = flagSystem.TryDeleteFlag;
                         mouseMoved = null;
                         break;
                     case InputStates.PlacingFlag:
                         lmbDown = flagSystem.OnMousePressed;
                         mouseMoved = flagSystem.OnMouseMoved;
+                        rmbDown = (v) => { flagSystem.ObjectToPLace = null; InputState = InputStates.Empty; };
                         lmbHold = null;
                         lmbUp = null;
                         break;
@@ -75,11 +78,13 @@ namespace App.Systems
         {
             mouseMoved?.Invoke(Input.mousePosition);
             if (!EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0))
-                lmbDown?.Invoke(Input.mousePosition); //unitSelectionSystem.OnMousePressed(Input.mousePosition);
+                lmbDown?.Invoke(Input.mousePosition);
             if (Input.GetMouseButton(0))
-                lmbHold?.Invoke(Input.mousePosition); //unitSelectionSystem.OnMouseHold(Input.mousePosition);
+                lmbHold?.Invoke(Input.mousePosition);
             if (Input.GetMouseButtonUp(0))
-                lmbUp?.Invoke(); //unitSelectionSystem.OnMouseReleased();
+                lmbUp?.Invoke();
+            if (Input.GetMouseButtonDown(1))
+                rmbDown?.Invoke(Input.mousePosition);
         }
 
         private void HandleCameraMovement()
