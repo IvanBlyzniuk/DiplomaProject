@@ -6,9 +6,13 @@ using UnityEngine;
 namespace App.World.Entity.Minion
 {
     [RequireComponent(typeof(SteeringManager))]
-    public class MinionController : MonoBehaviour
+    public class MinionController : MonoBehaviour, IResettable
     {
+        private bool isActive = false;
         private SteeringManager steeringManager;
+
+        private Vector3 initialPosition;
+
         private Rigidbody2D evadeTargetBody;
         private List<GameObject> seekTargets = new List<GameObject>();
         private List<GameObject> fleeTargets = new List<GameObject>();
@@ -16,10 +20,6 @@ namespace App.World.Entity.Minion
         private int currentSeekTargetIndex = 0;
 
         [SerializeField] private MinionParamsSO minionParams;
-
-        //[Header("Debug fields")]
-        //[SerializeField] private GameObject leader;
-        //[SerializeField] private bool shouldWander;
 
         public List<GameObject> SeekTargets => seekTargets;
         public List<GameObject> FleeTargets => fleeTargets;
@@ -31,11 +31,12 @@ namespace App.World.Entity.Minion
         {
             steeringManager = GetComponent<SteeringManager>();
             steeringManager.Init(minionParams.maxVelocity, minionParams.maxForce);
-            //if(leader != null)
-            //    leaderBody = leader.GetComponent<Rigidbody2D>();
+            initialPosition = transform.position;
         }
         void Update()
         {
+            if (!isActive)
+                return;
             steeringManager.AvoidCollisions(minionParams.seeAheadDistance, minionParams.maxAvoidForce);
             if(currentSeekTargetIndex < seekTargets.Count)
             {
@@ -67,31 +68,23 @@ namespace App.World.Entity.Minion
             //    steeringManager.Wander(minionParams.maxVelocity /2 , minionParams.maxVelocity / 3, 10);
         }
 
-        //public void AddSeekTarget(GameObject target)
-        //{
-        //    seekTargets.Add(target);
-        //}
-
-        //internal void AddFleeTarget(GameObject target)
-        //{
-        //    fleeTargets.Add(target);
-        //}
-
-        //internal void AddEvadeTarget(GameObject target)
-        //{
-        //    var targetBody = target.GetComponent<Rigidbody2D>();
-        //    if (targetBody == null)
-        //    {
-        //        Debug.LogWarning("Trying to avoid enemy with no RigidBody");
-        //        return;
-        //    }
-        //    evadeTargets.Add(targetBody);
-        //}
-
         //For debugging purposes
         public override string ToString()
         {
             return gameObject.name;
+        }
+
+        public void ResetState()
+        {
+            transform.position = initialPosition;
+            steeringManager.ResetStearing();
+            currentSeekTargetIndex = 0;
+            isActive = false;
+        }
+
+        public void Activate()
+        {
+            isActive = true;
         }
     }
 }

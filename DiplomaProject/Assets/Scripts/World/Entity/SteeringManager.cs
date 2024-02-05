@@ -21,7 +21,7 @@ namespace App.World.Entity
         private CircleCollider2D circleCollider;
 
         private float maxVelocity;
-        private float maxForce; //static const?
+        private float maxForce;
 
         public float MaxVelocity => maxVelocity;
 
@@ -184,6 +184,12 @@ namespace App.World.Entity
             avoidance.Normalize();
             avoidance *= maxAvoidForce;
             steering += avoidance;
+        }
+
+        public void ResetStearing()
+        {
+            steering = Vector2.zero;
+            rigidBody.velocity = Vector2.zero;
         }
     }
 }
