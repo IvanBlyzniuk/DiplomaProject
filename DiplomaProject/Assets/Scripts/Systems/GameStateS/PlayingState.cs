@@ -7,15 +7,18 @@ namespace App.Systems
 {
     public class PlayingState : IState
     {
+        private InputSystem inputSystem;
         private IResettable[] resettables;
 
-        public PlayingState(IResettable[] resettables)
+        public PlayingState(InputSystem inputSystem, IResettable[] resettables)
         {
             this.resettables = resettables;
+            this.inputSystem = inputSystem;
         }
 
         public void Enter()
         {
+            inputSystem.InputState = InputStates.Playing;
             foreach (var resettable in resettables)
             {
                 resettable.Activate();

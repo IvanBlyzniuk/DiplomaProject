@@ -7,5 +7,6 @@ namespace App.Systems
     public interface IGameStateSystem
     {
         public void GoToPlayingState();
+        public void GoToPlanningState();
     }
 }

@@ -23,7 +23,8 @@ namespace App.Systems
             get => selectedFlag.gameObject; 
             set
             {
-                
+                if (inputSystem.InputState == InputStates.Playing)
+                    return;
                 if (value == null)
                 {
                     preview.gameObject.SetActive(false);

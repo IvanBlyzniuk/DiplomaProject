@@ -68,12 +68,6 @@ namespace App.World.Entity.Minion
             //    steeringManager.Wander(minionParams.maxVelocity /2 , minionParams.maxVelocity / 3, 10);
         }
 
-        //For debugging purposes
-        public override string ToString()
-        {
-            return gameObject.name;
-        }
-
         public void ResetState()
         {
             transform.position = initialPosition;
@@ -85,6 +79,13 @@ namespace App.World.Entity.Minion
         public void Activate()
         {
             isActive = true;
+            //Debug.Log("Activated");
+        }
+
+        //For debugging purposes
+        public override string ToString()
+        {
+            return gameObject.name;
         }
     }
 }

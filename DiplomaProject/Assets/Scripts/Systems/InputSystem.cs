@@ -46,6 +46,14 @@ namespace App.Systems
                         lmbHold = null;
                         lmbUp = null;
                         break;
+                    case InputStates.Playing:
+                        flagSystem.ObjectToPLace = null;
+                        lmbDown = null;
+                        mouseMoved = null;
+                        rmbDown = null;
+                        lmbHold = null;
+                        lmbUp = null;
+                        break;
                 }
             }
         }
@@ -122,6 +130,7 @@ namespace App.Systems
     {
         PlacingFlag,
         Empty,
+        Playing,
     }
 }
 

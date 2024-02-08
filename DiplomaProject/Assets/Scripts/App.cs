@@ -13,13 +13,15 @@ namespace App
         [SerializeField] private InputSystem inputSystem;
         [SerializeField] private UnitSelectionSystem unitSelectionSystem;
         [SerializeField] private FlagSystem flagSystem;
+        [SerializeField] private GameStateSystem gameStateSystem;
 
         void Start()
         {
             unitSelectionSystem.Init(objectsContainer.MainCamera, objectsContainer.SelectorImage);
             inputSystem.Init(unitSelectionSystem, flagSystem, objectsContainer.MainCamera, objectsContainer.CameraFollowTarget);
             flagSystem.Init(inputSystem, unitSelectionSystem, objectsContainer.FlagPlacementPreview, objectsContainer.MainCamera);
-
+            gameStateSystem.Init( inputSystem, objectsContainer.gameObject);
+            objectsContainer.GameStateChanger.Init(gameStateSystem);
             foreach (var flagSelector in objectsContainer.FlagSelectors)
             {
                 flagSelector.Init(flagSystem);

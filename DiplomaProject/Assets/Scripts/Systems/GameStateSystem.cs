@@ -7,6 +7,7 @@ namespace App.Systems
 {
     public class GameStateSystem : MonoBehaviour, IGameStateSystem
     {
+        private InputSystem inputSystem;
         private GameObject worldParentObject;
         private IResettable[] resettables;
 
@@ -14,20 +15,16 @@ namespace App.Systems
         private PlayingState playingState;
         private PlanningState planningState;
 
-        public void Init(GameObject worldParentObject)
+        public void Init(InputSystem inputSystem, GameObject worldParentObject)
         {
+            this.inputSystem = inputSystem;
             this.worldParentObject = worldParentObject;
+            resettables = this.worldParentObject.GetComponentsInChildren<IResettable>();
             stateMachine = new StateMachine();
-            playingState = new PlayingState(resettables);
-            planningState = new PlanningState();
+            playingState = new PlayingState(inputSystem, resettables);
+            planningState = new PlanningState(inputSystem);
             stateMachine.Initialize(planningState);
         }
-
-        void Awake()
-        {
-            resettables = worldParentObject.GetComponentsInChildren<IResettable>();
-        }
-
         public void GoToPlayingState()
         {
             stateMachine.ChangeState(playingState);
