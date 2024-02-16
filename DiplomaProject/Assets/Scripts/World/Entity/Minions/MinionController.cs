@@ -13,7 +13,6 @@ namespace App.World.Entity.Minion
 
         private Vector3 initialPosition;
 
-        private Rigidbody2D evadeTargetBody;
         private List<GameObject> seekTargets = new List<GameObject>();
         private List<GameObject> fleeTargets = new List<GameObject>();
         private List<Rigidbody2D> evadeTargets = new List<Rigidbody2D>();
@@ -57,7 +56,11 @@ namespace App.World.Entity.Minion
             foreach(var evadeTarget in evadeTargets)
             {
                 if (Vector2.Distance(transform.position, evadeTarget.transform.position) < minionParams.maxFleeDistance)
+                {
                     steeringManager.Evade(evadeTarget);
+                    Debug.Log("Evading");
+                }
+                    
             }
 
             if(Leader != null && Leader.gameObject != gameObject)
@@ -70,6 +73,7 @@ namespace App.World.Entity.Minion
 
         public void ResetState()
         {
+            gameObject.SetActive(true);
             transform.position = initialPosition;
             steeringManager.ResetStearing();
             currentSeekTargetIndex = 0;
@@ -80,6 +84,12 @@ namespace App.World.Entity.Minion
         {
             isActive = true;
             //Debug.Log("Activated");
+        }
+
+        public void Die()
+        {
+            //TODO: play animation
+            gameObject.SetActive(false);
         }
 
         //For debugging purposes

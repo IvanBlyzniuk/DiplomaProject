@@ -134,6 +134,14 @@ namespace App.World.Entity
             Flee(futurePosition);
         }
 
+        public void Pursue(Rigidbody2D target)
+        {
+            Vector2 distance = target.transform.position - transform.position;
+            float timeAhead = distance.magnitude / maxVelocity;
+            Vector2 futurePosition = (Vector2)target.transform.position + target.velocity * timeAhead;
+            Seek(futurePosition);
+        }
+
         public void HandleSeparation(float separationRadius, float separationSpeed)
         {
             Vector3 force = Vector3.zero;
