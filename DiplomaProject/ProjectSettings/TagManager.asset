@@ -17,7 +17,7 @@ TagManager:
   - Enemies
   - Flags
   - Enemy Vision
-  - 
+  - Interactive Objects
   - 
   - 
   - 
@@ -38,6 +38,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3324552401
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Minions
+    uniqueID: 864611507
+    locked: 0
+  - name: Flags
+    uniqueID: 2138913807
     locked: 0

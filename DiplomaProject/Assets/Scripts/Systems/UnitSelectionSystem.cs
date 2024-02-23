@@ -89,7 +89,7 @@ namespace App.Systems
                 }
             }
             isSelecting = false;
-            Debug.Log(selectedMinions.Count);
+            //Debug.Log(selectedMinions.Count);
         }
     }
 }
