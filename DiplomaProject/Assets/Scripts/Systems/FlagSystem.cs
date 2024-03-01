@@ -1,4 +1,5 @@
 using App.World.Entity.Flags;
+using App.World.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,12 +12,16 @@ namespace App.Systems
     {
         private static readonly Color halfTransparrentYellow = new Color(1f, 0.92f, 0.016f, 0.5f);
         private static readonly Color halfTransparrentRed = new Color(1f, 0f, 0f, 0.5f);
-
+        
         private InputSystem inputSystem;
         private SpriteRenderer preview;
-        private IFlag selectedFlag;
+        private BaseFlag selectedFlag;
         private Camera mainCamera;
         private UnitSelectionSystem unitSelectionSystem;
+        private List<FlagSelector> flagSelectors;
+
+        public FlagSelector ActiveSelector { get; set; }
+
 
         public GameObject ObjectToPLace 
         { 
@@ -30,7 +35,7 @@ namespace App.Systems
                     preview.gameObject.SetActive(false);
                     return;
                 }
-                selectedFlag = value.GetComponent<IFlag>();
+                selectedFlag = value.GetComponent<BaseFlag>();
                 SpriteRenderer selectedSpriteRenderer = selectedFlag.gameObject.GetComponent<SpriteRenderer>();
                 if(selectedSpriteRenderer == null)
                 {
@@ -45,12 +50,19 @@ namespace App.Systems
             }
         }
 
-        public void Init(InputSystem inputSystem, UnitSelectionSystem unitSelectionSystem, SpriteRenderer preview, Camera mainCamera)
+        public void Init(InputSystem inputSystem, UnitSelectionSystem unitSelectionSystem, SpriteRenderer preview, Camera mainCamera, List<FlagSelector> flagSelectors)
         {
             this.inputSystem = inputSystem;
             this.unitSelectionSystem = unitSelectionSystem;
             this.preview = preview;
             this.mainCamera = mainCamera;
+            this.flagSelectors = flagSelectors;
+
+            foreach (var flagSelector in flagSelectors)
+            {
+                flagSelector.Init(this);
+            }
+
             preview.gameObject.SetActive(false);
         }
 
@@ -60,14 +72,14 @@ namespace App.Systems
             var flagCollider = Physics2D.OverlapPoint(cursorWorldPosition, LayerMask.GetMask("Flags"));
             if (flagCollider == null)
                 return;
-            IFlag flag = flagCollider.gameObject.GetComponent<IFlag>();
+            BaseFlag flag = flagCollider.gameObject.GetComponent<BaseFlag>();
             if (flag == null)
             {
                 Debug.LogWarning("Trying ot delete flag with no IFlag component");
                 return;
             }
-            flag.RemoveOrder();
-            Destroy(flag.gameObject);
+            flag.RemoveFlag();
+            //Destroy(flag.gameObject);
         }
 
         public void OnMouseMoved(Vector2 cursorPosition)
@@ -76,7 +88,7 @@ namespace App.Systems
                 return;
             Vector2 cursorWorldPosition = mainCamera.ScreenToWorldPoint(cursorPosition);
             preview.transform.position = cursorWorldPosition;
-            if(!selectedFlag.CheckPlacementValidity(cursorWorldPosition))
+            if(!selectedFlag.CheckPlacementValidity(cursorWorldPosition) || ActiveSelector.AllowedFlagsCount == 0)
             {
                 preview.color = halfTransparrentRed;
             }
@@ -90,12 +102,13 @@ namespace App.Systems
         {
             preview.gameObject.SetActive(false);
             Vector2 cursorWorldPosition = mainCamera.ScreenToWorldPoint(cursorPosition);
-            if (!selectedFlag.CheckPlacementValidity(cursorWorldPosition))
+            if (!selectedFlag.CheckPlacementValidity(cursorWorldPosition) || ActiveSelector.AllowedFlagsCount == 0)
                 return;
             inputSystem.InputState = InputStates.Empty;
+            //ActiveSelector.AllowedFlagsCount--;
             GameObject flagObject = Instantiate(selectedFlag.gameObject, cursorWorldPosition, Quaternion.identity);
-            IFlag placedFlag = flagObject.GetComponent<IFlag>();
-            placedFlag.AddOrder(unitSelectionSystem.SelectedMinions);
+            BaseFlag placedFlag = flagObject.GetComponent<BaseFlag>();
+            placedFlag.Init(unitSelectionSystem.SelectedMinions, ActiveSelector);
         }
     }
 }

@@ -6,10 +6,10 @@ using System.Linq;
 
 namespace App.World.Entity.Flags
 {
-    public class SeekFlag : MonoBehaviour, IFlag
+    public class SeekFlag : BaseFlag
 {
         private List<MinionController> affectedMinions;
-        public void AddOrder(ISet<MinionController> minions)
+        protected override void AddOrder(ISet<MinionController> minions)
         {
             affectedMinions = new List<MinionController>(minions);
             foreach (MinionController minion in affectedMinions)
@@ -18,12 +18,12 @@ namespace App.World.Entity.Flags
             }
         }
 
-        public bool CheckPlacementValidity(Vector2 position)
+        public override bool CheckPlacementValidity(Vector2 position)
         {
             return !Physics2D.OverlapPoint(position, LayerMask.GetMask(new[] { "Walls", "Obstacles" }));
         }
 
-        public void RemoveOrder()
+        protected override void RemoveOrder()
         {
             foreach (MinionController minion in affectedMinions)
             {

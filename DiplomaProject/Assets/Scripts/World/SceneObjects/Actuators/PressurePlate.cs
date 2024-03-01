@@ -53,6 +53,12 @@ namespace App.World.SceneObjects.Actuators
         {
             int leftToPress = unitsNeededToPress - currentUnitsPressing;
             unitsToPressText.text = (leftToPress >= 0 ? leftToPress : 0).ToString();
+            if (leftToPress <= 0)
+                unitsToPressText.color = Color.green;
+            else if (leftToPress < unitsNeededToPress)
+                unitsToPressText.color = Color.yellow;
+            else
+                unitsToPressText.color = Color.red;
         }
     }
 }

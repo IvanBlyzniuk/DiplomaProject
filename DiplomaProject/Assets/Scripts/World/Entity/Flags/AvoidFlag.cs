@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace App.World.Entity.Flags
 {
-    public class AvoidFlag : MonoBehaviour, IFlag
+    public class AvoidFlag : BaseFlag
     {
         private List<MinionController> affectedMinions;
         private Rigidbody2D targetBody;
-        public void AddOrder(ISet<MinionController> minions)
+        protected override void AddOrder(ISet<MinionController> minions)
         {
             affectedMinions = new List<MinionController>(minions);
             var hoveredObject = Physics2D.OverlapPoint(transform.position, LayerMask.GetMask("Enemies"));
@@ -36,12 +36,12 @@ namespace App.World.Entity.Flags
             }
         }
 
-        public bool CheckPlacementValidity(Vector2 position)
+        public override bool CheckPlacementValidity(Vector2 position)
         {
             return !Physics2D.OverlapPoint(position, LayerMask.GetMask(new[] { "Walls", "Obstacles" }));
         }
 
-        public void RemoveOrder()
+        protected override void RemoveOrder()
         {
             if(targetBody != null)
             {
