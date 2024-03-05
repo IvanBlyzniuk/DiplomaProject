@@ -42,7 +42,7 @@ namespace App.World.Entity.Enemy
             if (!isActive)
                 return;
 
-            detectionCollider.transform.right = rigidBody.velocity.normalized;
+            //detectionCollider.transform.right = rigidBody.velocity.normalized;
 
             steeringManager.AvoidCollisions(enemyParams.seeAheadDistance, enemyParams.maxAvoidForce);
 

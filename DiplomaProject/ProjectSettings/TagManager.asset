@@ -50,3 +50,6 @@ TagManager:
   - name: Flags
     uniqueID: 2138913807
     locked: 0
+  - name: Particles
+    uniqueID: 3620468645
+    locked: 0
