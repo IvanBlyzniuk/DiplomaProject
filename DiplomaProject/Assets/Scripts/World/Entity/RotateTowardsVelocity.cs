@@ -17,7 +17,7 @@ namespace App.World.Entity
         void Update()
         {
             if(rigidBody.velocity != Vector2.zero)
-                transform.up = rigidBody.velocity;
+                transform.up = rigidBody.velocity.normalized;
         }
     }
 }

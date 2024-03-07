@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace App.Systems
 {
@@ -62,7 +63,10 @@ namespace App.Systems
             var minionsToSelect = Physics2D.OverlapBoxAll(center, size, 0f, LayerMask.GetMask("Minions"));
 
             if(!ShouldAddSelection)
-                selectedMinions.Clear();
+            {
+                ClearSelection();
+            }
+                
 
             foreach (var minionCollider in minionsToSelect)
             {
@@ -77,19 +81,31 @@ namespace App.Systems
                     if(selectedMinions.Contains(minion))
                     {
                         selectedMinions.Remove(minion);
+                        minion.Deselect();
                     }
                     else
                     {
                         selectedMinions.Add(minion);
+                        minion.Select();
                     }
                 }
                 else
                 {
                     selectedMinions.Add(minion);
+                    minion.Select();
                 }
             }
             isSelecting = false;
             //Debug.Log(selectedMinions.Count);
+        }
+
+        public void ClearSelection()
+        { 
+            foreach (var minion in selectedMinions)
+            {
+                minion?.Deselect();
+            }
+            selectedMinions.Clear();
         }
     }
 }

@@ -15,13 +15,13 @@ namespace App.Systems
         private PlayingState playingState;
         private PlanningState planningState;
 
-        public void Init(InputSystem inputSystem, GameObject worldParentObject)
+        public void Init(InputSystem inputSystem, GameObject worldParentObject, UnitSelectionSystem unitSelectionSystem)
         {
             this.inputSystem = inputSystem;
             this.worldParentObject = worldParentObject;
             resettables = this.worldParentObject.GetComponentsInChildren<IResettable>();
             stateMachine = new StateMachine();
-            playingState = new PlayingState(inputSystem, resettables);
+            playingState = new PlayingState(inputSystem, resettables, unitSelectionSystem);
             planningState = new PlanningState(inputSystem);
             stateMachine.Initialize(planningState);
         }

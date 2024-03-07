@@ -20,7 +20,7 @@ namespace App
             unitSelectionSystem.Init(objectsContainer.MainCamera, objectsContainer.SelectorImage);
             inputSystem.Init(unitSelectionSystem, flagSystem, objectsContainer.MainCamera, objectsContainer.CameraFollowTarget);
             flagSystem.Init(inputSystem, unitSelectionSystem, objectsContainer.FlagPlacementPreview, objectsContainer.MainCamera, objectsContainer.FlagSelectors);
-            gameStateSystem.Init( inputSystem, objectsContainer.gameObject);
+            gameStateSystem.Init(inputSystem, objectsContainer.gameObject, unitSelectionSystem);
 
             objectsContainer.GameStateChanger.Init(gameStateSystem);
             objectsContainer.LevelEndingTrigger.Init(objectsContainer.BlackOverlay);

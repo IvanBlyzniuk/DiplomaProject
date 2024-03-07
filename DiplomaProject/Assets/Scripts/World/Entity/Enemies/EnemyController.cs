@@ -13,6 +13,7 @@ namespace App.World.Entity.Enemy
         private Rigidbody2D rigidBody;
 
         private Vector3 initialPosition;
+        private Quaternion initialRotation;
 
         private int currentSeekTargetIndex = 0;
         private int seekTargetIncrementer = 1;
@@ -32,6 +33,7 @@ namespace App.World.Entity.Enemy
             rigidBody = GetComponent<Rigidbody2D>();
             steeringManager.Init(enemyParams.maxVelocity, enemyParams.maxForce);
             initialPosition = transform.position;
+            initialRotation = transform.rotation;
             detectedUnits = new Collider2D[1];
             contactFilter = new ContactFilter2D();
             contactFilter.SetLayerMask(LayerMask.GetMask("Minions"));
@@ -63,6 +65,8 @@ namespace App.World.Entity.Enemy
                 return;
             }
 
+            if (patrollingPath.Count == 0)
+                return;
             var currentSeekTarget = patrollingPath[currentSeekTargetIndex];
             steeringManager.Seek(currentSeekTarget);
             if (Vector2.Distance(transform.position, currentSeekTarget.transform.position) < enemyParams.seekTargetReachedDistance)
@@ -97,6 +101,7 @@ namespace App.World.Entity.Enemy
         public void ResetState()
         {
             transform.position = initialPosition;
+            transform.rotation = initialRotation;
             steeringManager.ResetStearing();
             currentSeekTargetIndex = 0;
             isActive = false;

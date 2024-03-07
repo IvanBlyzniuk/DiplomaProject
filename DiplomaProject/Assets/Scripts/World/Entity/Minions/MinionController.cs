@@ -8,11 +8,15 @@ namespace App.World.Entity.Minion
     [RequireComponent(typeof(SteeringManager))]
     public class MinionController : MonoBehaviour, IResettable
     {
+        private static readonly Color halfTransparrentGreen = new Color(0f, 1f, 0f, 0.5f);
+
         private bool isActive = false;
         private SteeringManager steeringManager;
+        private SpriteRenderer spriteRenderer;
+        private RotateTowardsVelocity rotateTowardsVelocity;
 
         private Vector3 initialPosition;
-
+        private Quaternion initialRotation;
         private List<GameObject> seekTargets = new List<GameObject>();
         private List<GameObject> fleeTargets = new List<GameObject>();
         private List<Rigidbody2D> evadeTargets = new List<Rigidbody2D>();
@@ -29,8 +33,11 @@ namespace App.World.Entity.Minion
         void Start()
         {
             steeringManager = GetComponent<SteeringManager>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            rotateTowardsVelocity = GetComponent<RotateTowardsVelocity>();
             steeringManager.Init(minionParams.maxVelocity, minionParams.maxForce);
             initialPosition = transform.position;
+            initialRotation = transform.rotation;
         }
         void Update()
         {
@@ -74,8 +81,10 @@ namespace App.World.Entity.Minion
         public void ResetState()
         {
             gameObject.SetActive(true);
-            transform.position = initialPosition;
+            rotateTowardsVelocity.enabled = false;
             steeringManager.ResetStearing();
+            transform.position = initialPosition;
+            transform.rotation = initialRotation;
             currentSeekTargetIndex = 0;
             isActive = false;
         }
@@ -83,6 +92,7 @@ namespace App.World.Entity.Minion
         public void Activate()
         {
             isActive = true;
+            rotateTowardsVelocity.enabled = true;
             //Debug.Log("Activated");
         }
 
@@ -90,6 +100,16 @@ namespace App.World.Entity.Minion
         {
             //TODO: play animation
             gameObject.SetActive(false);
+        }
+
+        public void Select()
+        {
+            spriteRenderer.color = halfTransparrentGreen;
+        }
+
+        public void Deselect()
+        {
+            spriteRenderer.color = Color.white;
         }
 
         //For debugging purposes

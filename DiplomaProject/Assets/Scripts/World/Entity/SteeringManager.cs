@@ -14,6 +14,7 @@ namespace App.World.Entity
         private float lastSeekTargetSlowingRadius;
         #endregion
 
+        private bool shouldResetSteering = false;
         private float wanderAngle = 0f;
         private Vector2 steering;
         private Rigidbody2D rigidBody;
@@ -42,6 +43,14 @@ namespace App.World.Entity
 
         void LateUpdate()
         {
+            if (shouldResetSteering)
+            {
+                shouldResetSteering = false;
+                steering = Vector2.zero;
+                rigidBody.angularVelocity = 0f;
+                rigidBody.velocity = Vector2.zero;
+                return;
+            }
             steering = Vector2.ClampMagnitude(steering, maxForce);
             rigidBody.AddForce(steering);
             rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, maxVelocity);
@@ -196,7 +205,9 @@ namespace App.World.Entity
 
         public void ResetStearing()
         {
+            shouldResetSteering = true;
             steering = Vector2.zero;
+            rigidBody.angularVelocity = 0f;
             rigidBody.velocity = Vector2.zero;
         }
     }

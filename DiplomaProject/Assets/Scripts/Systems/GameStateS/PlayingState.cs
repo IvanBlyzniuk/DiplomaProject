@@ -9,15 +9,18 @@ namespace App.Systems
     {
         private InputSystem inputSystem;
         private IResettable[] resettables;
+        private UnitSelectionSystem unitSelectionSystem;
 
-        public PlayingState(InputSystem inputSystem, IResettable[] resettables)
+        public PlayingState(InputSystem inputSystem, IResettable[] resettables, UnitSelectionSystem unitSelectionSystem)
         {
             this.resettables = resettables;
             this.inputSystem = inputSystem;
+            this.unitSelectionSystem = unitSelectionSystem;
         }
 
         public void Enter()
         {
+            unitSelectionSystem.ClearSelection();
             inputSystem.InputState = InputStates.Playing;
             foreach (var resettable in resettables)
             {
