@@ -11,6 +11,7 @@ namespace App.World.Entity.Enemy
         private bool isActive = false;
         private SteeringManager steeringManager;
         private Rigidbody2D rigidBody;
+        private Animator animator;
 
         private Vector3 initialPosition;
         private Quaternion initialRotation;
@@ -31,6 +32,7 @@ namespace App.World.Entity.Enemy
         {
             steeringManager = GetComponent<SteeringManager>();
             rigidBody = GetComponent<Rigidbody2D>();
+            animator = GetComponent<Animator>();
             steeringManager.Init(enemyParams.maxVelocity, enemyParams.maxForce);
             initialPosition = transform.position;
             initialRotation = transform.rotation;
@@ -41,9 +43,16 @@ namespace App.World.Entity.Enemy
 
         void Update()
         {
+            if (rigidBody.velocity.magnitude > 0)
+            {
+                animator.SetBool("isMoving", true);
+            }
+            else
+            {
+                animator.SetBool("isMoving", false);
+            }
             if (!isActive)
                 return;
-
             //detectionCollider.transform.right = rigidBody.velocity.normalized;
 
             steeringManager.AvoidCollisions(enemyParams.seeAheadDistance, enemyParams.maxAvoidForce);
@@ -51,6 +60,10 @@ namespace App.World.Entity.Enemy
             if(agrroedTarget != null)
             {
                 steeringManager.Pursue(agrroedTarget);
+                if (((Vector2)transform.position - agrroedTarget.position).magnitude < 1.5f)
+                {
+                    animator.SetBool("isAttacking", true);
+                }
                 return;
             }
 
@@ -114,6 +127,11 @@ namespace App.World.Entity.Enemy
                 return;
             minionController.Die();
             agrroedTarget = null;
+        }
+
+        public void EndAttack()
+        {
+            animator.SetBool("isAttacking", false);
         }
     }
 }

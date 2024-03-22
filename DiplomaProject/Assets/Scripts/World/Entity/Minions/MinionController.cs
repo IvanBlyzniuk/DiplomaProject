@@ -14,6 +14,8 @@ namespace App.World.Entity.Minion
         private SteeringManager steeringManager;
         private SpriteRenderer spriteRenderer;
         private RotateTowardsVelocity rotateTowardsVelocity;
+        private Rigidbody2D rigidBody;
+        private Animator animator;
 
         private Vector3 initialPosition;
         private Quaternion initialRotation;
@@ -35,12 +37,22 @@ namespace App.World.Entity.Minion
             steeringManager = GetComponent<SteeringManager>();
             spriteRenderer = GetComponent<SpriteRenderer>();
             rotateTowardsVelocity = GetComponent<RotateTowardsVelocity>();
+            rigidBody = GetComponent<Rigidbody2D>();
+            animator = GetComponent<Animator>();
             steeringManager.Init(minionParams.maxVelocity, minionParams.maxForce);
             initialPosition = transform.position;
             initialRotation = transform.rotation;
         }
         void Update()
         {
+            if (rigidBody.velocity.magnitude > minionParams.maxVelocity / 5f)
+            {
+                animator.SetBool("isMoving", true);
+            }
+            else
+            {
+                animator.SetBool("isMoving", false);
+            }
             if (!isActive)
                 return;
             steeringManager.AvoidCollisions(minionParams.seeAheadDistance, minionParams.maxAvoidForce);
