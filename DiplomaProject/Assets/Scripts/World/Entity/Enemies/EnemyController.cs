@@ -12,6 +12,7 @@ namespace App.World.Entity.Enemy
         private SteeringManager steeringManager;
         private Rigidbody2D rigidBody;
         private Animator animator;
+        private RotateTowardsVelocity rotateTowardsVelocity;
 
         private Vector3 initialPosition;
         private Quaternion initialRotation;
@@ -22,17 +23,21 @@ namespace App.World.Entity.Enemy
         private ContactFilter2D contactFilter;
         private Rigidbody2D agrroedTarget;
         private Collider2D[] detectedUnits;
+        
 
         [SerializeField] private EnemyParamsSO enemyParams;
         [SerializeField] private Collider2D detectionCollider;
+        [SerializeField] private GameObject mark;
         [SerializeField] private bool circlePatrolling;
         [SerializeField] private List<GameObject> patrollingPath;
+
 
         void Start()
         {
             steeringManager = GetComponent<SteeringManager>();
             rigidBody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
+            rotateTowardsVelocity = GetComponent<RotateTowardsVelocity>();
             steeringManager.Init(enemyParams.maxVelocity, enemyParams.maxForce);
             initialPosition = transform.position;
             initialRotation = transform.rotation;
@@ -109,15 +114,27 @@ namespace App.World.Entity.Enemy
         public void Activate()
         {
             isActive = true;
+            rotateTowardsVelocity.enabled = true;
         }
 
         public void ResetState()
         {
+            rotateTowardsVelocity.enabled = false;
+            steeringManager.ResetStearing();
             transform.position = initialPosition;
             transform.rotation = initialRotation;
-            steeringManager.ResetStearing();
             currentSeekTargetIndex = 0;
             isActive = false;
+        }
+
+        public void EnableMark()
+        {
+            mark.SetActive(true);
+        }
+
+        public void DisableMark()
+        {
+            mark.SetActive(false);
         }
 
         public void OnCollisionEnter2D(Collision2D collision)

@@ -1,3 +1,4 @@
+using App.World.Entity.Enemy;
 using App.World.Entity.Minion;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace App.World.Entity.Flags
     {
         private List<MinionController> affectedMinions;
         private Rigidbody2D targetBody;
+        private EnemyController enemyController;
         protected override void AddOrder(ISet<MinionController> minions)
         {
             affectedMinions = new List<MinionController>(minions);
@@ -22,15 +24,17 @@ namespace App.World.Entity.Flags
             }
             else
             {
-                //TODO: add flag to enemy
-                foreach (MinionController minion in affectedMinions)
+                targetBody = hoveredObject.GetComponent<Rigidbody2D>();
+                enemyController = hoveredObject.GetComponent<EnemyController>();
+                if (targetBody == null || enemyController == null)
                 {
-                    targetBody = hoveredObject.GetComponent<Rigidbody2D>();
-                    if (targetBody == null)
-                    {
-                        Debug.LogWarning("Trying to avoid enemy with no RigidBody");
-                        return;
-                    }
+                    Debug.LogWarning("Trying to avoid enemy with no RigidBody or controller");
+                    return;
+                }
+                enemyController.EnableMark();
+                GetComponent<SpriteRenderer>().enabled = false;
+                foreach (MinionController minion in affectedMinions)
+                {   
                     minion.EvadeTargets.Add(targetBody);
                 }
             }
@@ -45,7 +49,8 @@ namespace App.World.Entity.Flags
         {
             if(targetBody != null)
             {
-                foreach(var minion in affectedMinions)
+                enemyController.DisableMark();
+                foreach (var minion in affectedMinions)
                 {
                     minion.EvadeTargets.Remove(targetBody);
                 }

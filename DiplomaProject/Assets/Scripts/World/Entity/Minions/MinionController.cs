@@ -25,6 +25,7 @@ namespace App.World.Entity.Minion
         private int currentSeekTargetIndex = 0;
 
         [SerializeField] private MinionParamsSO minionParams;
+        [SerializeField] private GameObject crown;
 
         public List<GameObject> SeekTargets => seekTargets;
         public List<GameObject> FleeTargets => fleeTargets;
@@ -84,10 +85,8 @@ namespace App.World.Entity.Minion
 
             if(Leader != null && Leader.gameObject != gameObject)
             {
-                steeringManager.FollowLeader(Leader, 2f, 1f, minionParams.separationRadius, minionParams.separationSpeed, 1f);
+                steeringManager.FollowLeader(Leader, 1.5f, 0.7f, minionParams.separationRadius, minionParams.separationSpeed, 0.5f);
             }
-            //if (shouldWander)
-            //    steeringManager.Wander(minionParams.maxVelocity /2 , minionParams.maxVelocity / 3, 10);
         }
 
         public void ResetState()
@@ -105,7 +104,6 @@ namespace App.World.Entity.Minion
         {
             isActive = true;
             rotateTowardsVelocity.enabled = true;
-            //Debug.Log("Activated");
         }
 
         public void Die()
@@ -122,6 +120,16 @@ namespace App.World.Entity.Minion
         public void Deselect()
         {
             spriteRenderer.color = Color.white;
+        }
+
+        public void EnableCrown()
+        {
+            crown.SetActive(true);
+        }
+
+        public void DisableCrown()
+        {
+            crown.SetActive(false);
         }
 
         //For debugging purposes

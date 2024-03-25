@@ -175,8 +175,17 @@ namespace App.World.Entity
 
         public void FollowLeader(Rigidbody2D leader, float leaderBehindDist, float leaderSightRadius, float separationRadius, float separationSpeed, float slowingRadius = 0f)
         {
-            Vector2 force = Vector2.zero;
-            Vector2 tv = leader.velocity.normalized * leaderBehindDist;
+            Vector2 leaderDirection;
+            if (leader.velocity == Vector2.zero)
+            {
+                leaderDirection = leader.transform.up;
+            }
+            else
+            {
+                leaderDirection = leader.velocity.normalized;
+            }
+            Vector2 tv = leaderDirection * leaderBehindDist;
+
             Vector2 behindPosition = leader.position - tv;
             Vector2 aheadPosition = leader.position + tv;
 

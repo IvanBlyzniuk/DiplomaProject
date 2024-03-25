@@ -9,11 +9,15 @@ namespace App.World.Entity.Flags
     {
         private List<MinionController> affectedMinions;
         private Rigidbody2D leaderBody;
+        private MinionController leaderController;
         protected override void AddOrder(ISet<MinionController> minions)
         {
             affectedMinions = new List<MinionController>(minions);
             var hoveredObject = Physics2D.OverlapPoint(transform.position, LayerMask.GetMask("Minions"));
             leaderBody = hoveredObject.GetComponent<Rigidbody2D>();
+            leaderController = hoveredObject.GetComponent<MinionController>();
+            GetComponent<SpriteRenderer>().enabled = false;
+            leaderController.EnableCrown();
             foreach (var minion in affectedMinions)
             {
                 minion.Leader = leaderBody;
@@ -27,6 +31,7 @@ namespace App.World.Entity.Flags
 
         protected override void RemoveOrder()
         {
+            leaderController.DisableCrown();
             foreach (var minion in affectedMinions)
             {
                 minion.Leader = null;

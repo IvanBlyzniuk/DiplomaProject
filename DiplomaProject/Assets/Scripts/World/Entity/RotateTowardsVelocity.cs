@@ -11,13 +11,18 @@ namespace App.World.Entity
         void Start()
         {
             rigidBody = GetComponent<Rigidbody2D>();
+            if (rigidBody == null)
+                rigidBody = transform.parent.gameObject.GetComponent<Rigidbody2D>();
         }
 
 
         void Update()
         {
             if(rigidBody.velocity != Vector2.zero)
-                transform.up = rigidBody.velocity.normalized;
+            {
+                transform.up = Vector3.Lerp(transform.up, rigidBody.velocity.normalized, Time.deltaTime * 5);
+            }
+                
         }
     }
 }

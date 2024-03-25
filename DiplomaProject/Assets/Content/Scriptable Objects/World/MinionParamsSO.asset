@@ -17,4 +17,6 @@ MonoBehaviour:
   seeAheadDistance: 4
   maxAvoidForce: 5
   separationRadius: 1
-  separationSpeed: 5
+  separationSpeed: 0.3
+  seekTargetReachedDistance: 0.5
+  maxFleeDistance: 5
