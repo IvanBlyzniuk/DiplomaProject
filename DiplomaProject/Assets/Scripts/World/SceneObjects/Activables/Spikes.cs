@@ -10,14 +10,18 @@ namespace App.World.SceneObjects.Activables
         private BoxCollider2D boxCollider;
         private SpriteRenderer spriteRenderer;
         private Sprite inactiveSprite;
+        private AudioSource audioSource;
 
         [SerializeField] private Sprite activeSprite;
+        [SerializeField] private AudioClip activationSound;
+        [SerializeField] private AudioClip deactivationSound;
         [SerializeField] private bool activeByDefault;
 
         private void Awake()
         {
             boxCollider = GetComponent<BoxCollider2D>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+            audioSource = GetComponent<AudioSource>();
             inactiveSprite = spriteRenderer.sprite;
             if (!activeByDefault)
             {
@@ -34,11 +38,13 @@ namespace App.World.SceneObjects.Activables
         {
             if(activeByDefault)
             {
+                audioSource.PlayOneShot(deactivationSound);
                 boxCollider.enabled = false;
                 spriteRenderer.sprite = inactiveSprite;
             }
             else
             {
+                audioSource.PlayOneShot(activationSound);
                 boxCollider.enabled = true;
                 spriteRenderer.sprite = activeSprite;
             }
@@ -50,11 +56,13 @@ namespace App.World.SceneObjects.Activables
                 return;
             if (activeByDefault)
             {
+                audioSource.PlayOneShot(activationSound);
                 boxCollider.enabled = true;
                 spriteRenderer.sprite = activeSprite;
             }
             else
             {
+                audioSource.PlayOneShot(deactivationSound);
                 boxCollider.enabled = false;
                 spriteRenderer.sprite = inactiveSprite;
             }
@@ -63,8 +71,6 @@ namespace App.World.SceneObjects.Activables
         private void OnTriggerEnter2D(Collider2D collision)
         {
             var minion = collision.GetComponent<MinionController>();
-            //if (minion == null)
-            //    return;
             minion?.Die();
         }
     }

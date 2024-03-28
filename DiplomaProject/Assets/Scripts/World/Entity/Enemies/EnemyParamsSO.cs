@@ -10,4 +10,5 @@ public class EnemyParamsSO : ScriptableObject
     public float seeAheadDistance;
     public float seekTargetReachedDistance = 0.5f;
     public float maxAvoidForce;
+    public AudioClip attackSound;
 }

@@ -11,14 +11,18 @@ namespace App.World.SceneObjects.Actuators
         private bool isPressed = false;
         private SpriteRenderer spriteRenderer;
         private Sprite inactiveSprite;
+        private AudioSource audioSource;
 
         [SerializeField] private int unitsNeededToPress;
         [SerializeField] private Sprite activeSprite;
         [SerializeField] private TextMeshPro unitsToPressText;
+        [SerializeField] private AudioClip activationSound;
+        [SerializeField] private AudioClip deactivationSound;
 
         private void Awake()
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
+            audioSource = GetComponent<AudioSource>();
             inactiveSprite = spriteRenderer.sprite;
             updateText();
         }
@@ -31,6 +35,7 @@ namespace App.World.SceneObjects.Actuators
             if(!isPressed && currentUnitsPressing == unitsNeededToPress)
             {
                 Activate();
+                audioSource.PlayOneShot(activationSound);
                 spriteRenderer.sprite = activeSprite;
                 isPressed = true;
             }
@@ -44,6 +49,7 @@ namespace App.World.SceneObjects.Actuators
             if(isPressed && currentUnitsPressing < unitsNeededToPress)
             {
                 Deactivate();
+                audioSource.PlayOneShot(deactivationSound);
                 spriteRenderer.sprite = inactiveSprite;
                 isPressed = false;
             }

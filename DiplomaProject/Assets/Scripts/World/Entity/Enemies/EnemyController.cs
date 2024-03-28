@@ -13,6 +13,7 @@ namespace App.World.Entity.Enemy
         private Rigidbody2D rigidBody;
         private Animator animator;
         private RotateTowardsVelocity rotateTowardsVelocity;
+        private AudioSource audioSource;
 
         private Vector3 initialPosition;
         private Quaternion initialRotation;
@@ -38,6 +39,7 @@ namespace App.World.Entity.Enemy
             rigidBody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             rotateTowardsVelocity = GetComponent<RotateTowardsVelocity>();
+            audioSource = GetComponent<AudioSource>();
             steeringManager.Init(enemyParams.maxVelocity, enemyParams.maxForce);
             initialPosition = transform.position;
             initialRotation = transform.rotation;
@@ -67,7 +69,11 @@ namespace App.World.Entity.Enemy
                 steeringManager.Pursue(agrroedTarget);
                 if (((Vector2)transform.position - agrroedTarget.position).magnitude < 1.5f)
                 {
-                    animator.SetBool("isAttacking", true);
+                    if(!animator.GetBool("isAttacking"))
+                    {
+                        animator.SetBool("isAttacking", true);
+                        audioSource.PlayOneShot(enemyParams.attackSound);
+                    }
                 }
                 return;
             }

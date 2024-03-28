@@ -15,6 +15,7 @@ namespace App.World.Entity.Minion
         public float separationSpeed = 5f;
         public float seekTargetReachedDistance = 0.5f;
         public float maxFleeDistance = 5f;
+        public AudioClip deathSound;
     }
 }
 

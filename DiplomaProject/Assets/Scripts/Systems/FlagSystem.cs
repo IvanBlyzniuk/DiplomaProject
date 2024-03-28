@@ -19,6 +19,10 @@ namespace App.Systems
         private Camera mainCamera;
         private UnitSelectionSystem unitSelectionSystem;
         private List<FlagSelector> flagSelectors;
+        private AudioSource audioSource;
+
+        [SerializeField] private AudioClip flagPlacementSound;
+        [SerializeField] private AudioClip flagRemovalSound;
 
         public FlagSelector ActiveSelector { get; set; }
 
@@ -50,6 +54,11 @@ namespace App.Systems
             }
         }
 
+        public void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
         public void Init(InputSystem inputSystem, UnitSelectionSystem unitSelectionSystem, SpriteRenderer preview, Camera mainCamera, List<FlagSelector> flagSelectors)
         {
             this.inputSystem = inputSystem;
@@ -79,7 +88,7 @@ namespace App.Systems
                 return;
             }
             flag.RemoveFlag();
-            //Destroy(flag.gameObject);
+            audioSource.PlayOneShot(flagRemovalSound);
         }
 
         public void OnMouseMoved(Vector2 cursorPosition)
@@ -105,10 +114,10 @@ namespace App.Systems
             if (!selectedFlag.CheckPlacementValidity(cursorWorldPosition) || ActiveSelector.AllowedFlagsCount == 0)
                 return;
             inputSystem.InputState = InputStates.Empty;
-            //ActiveSelector.AllowedFlagsCount--;
             GameObject flagObject = Instantiate(selectedFlag.gameObject, cursorWorldPosition, Quaternion.identity);
             BaseFlag placedFlag = flagObject.GetComponent<BaseFlag>();
             placedFlag.Init(unitSelectionSystem.SelectedMinions, ActiveSelector);
+            audioSource.PlayOneShot(flagPlacementSound);
         }
     }
 }

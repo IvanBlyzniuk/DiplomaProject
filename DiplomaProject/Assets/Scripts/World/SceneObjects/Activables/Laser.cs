@@ -10,13 +10,18 @@ namespace App.World.SceneObjects.Activables
     {
         private const float MAX_RAYCAST_DISTANCE = 1000f;
         private LineRenderer lineRenderer;
+        private AudioSource audioSource;
         private bool isActive;
         private LayerMask layerMask;
+
         [SerializeField] private bool activeByDefault;
+        [SerializeField] private AudioClip activationSound;
+        [SerializeField] private AudioClip deactivationSound;
 
         void Start()
         {
             lineRenderer = GetComponent<LineRenderer>();
+            audioSource = GetComponent<AudioSource>();
             layerMask = LayerMask.GetMask(new string[]{ "Obstacles", "Walls", "Minions", "Enemies" });
             isActive = activeByDefault;
             lineRenderer.enabled = isActive;
@@ -48,12 +53,20 @@ namespace App.World.SceneObjects.Activables
         protected override void OnActivate()
         {
             isActive = !activeByDefault;
+            if (isActive)
+                audioSource.PlayOneShot(activationSound);
+            else
+                audioSource.PlayOneShot(deactivationSound);
             lineRenderer.enabled = isActive;
         }
 
         protected override void OnDeactivate()
         {
             isActive = activeByDefault;
+            if (isActive)
+                audioSource.PlayOneShot(activationSound);
+            else
+                audioSource.PlayOneShot(deactivationSound);
             lineRenderer.enabled = isActive;
         }
 

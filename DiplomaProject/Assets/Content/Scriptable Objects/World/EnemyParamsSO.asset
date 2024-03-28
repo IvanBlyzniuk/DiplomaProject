@@ -17,3 +17,4 @@ MonoBehaviour:
   seeAheadDistance: 4
   seekTargetReachedDistance: 0.5
   maxAvoidForce: 5
+  attackSound: {fileID: 8300000, guid: 675b982ea0f0a8b41a888a1db35ae562, type: 3}
