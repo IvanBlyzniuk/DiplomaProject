@@ -1,3 +1,4 @@
+using App.World.Entity.Minion;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,6 +14,8 @@ namespace App.World.SceneObjects
         private float fadeoutTime = 1f;
         private Coroutine changingLevel;
         private Image blackOverlay;
+        private ParticleSystemForceField particleForceField;
+        private CircleCollider2D circleCollider;
 
         [SerializeField] private int unitsNeededToEnd;
         [SerializeField] private string nextLevelName;
@@ -21,11 +24,18 @@ namespace App.World.SceneObjects
         public void Init(Image blackOverlay)
         {
             this.blackOverlay = blackOverlay;
+            circleCollider = GetComponent<CircleCollider2D>();
+            particleForceField = GetComponent<ParticleSystemForceField>();
+            particleForceField.endRange = circleCollider.radius;
             updateText();
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
+            var minion = collision.GetComponent<MinionController>();
+            if (minion == null)
+                return;
+            minion.StartParticles();
             currentUnitsInterracting++;
             updateText();
             if (changingLevel == null && currentUnitsInterracting == unitsNeededToEnd)
@@ -51,6 +61,10 @@ namespace App.World.SceneObjects
 
         private void OnTriggerExit2D(Collider2D collision)
         {
+            var minion = collision.GetComponent<MinionController>();
+            if (minion == null)
+                return;
+            minion.StopParticles();
             if (currentUnitsInterracting > 0)
                 currentUnitsInterracting--;
             updateText();

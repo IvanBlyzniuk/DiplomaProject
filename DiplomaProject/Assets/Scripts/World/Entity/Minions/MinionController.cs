@@ -16,6 +16,7 @@ namespace App.World.Entity.Minion
         private RotateTowardsVelocity rotateTowardsVelocity;
         private Rigidbody2D rigidBody;
         private Animator animator;
+        private ParticleSystem endingParticleSystem;
 
         private Vector3 initialPosition;
         private Quaternion initialRotation;
@@ -40,6 +41,7 @@ namespace App.World.Entity.Minion
             rotateTowardsVelocity = GetComponent<RotateTowardsVelocity>();
             rigidBody = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
+            endingParticleSystem = GetComponent<ParticleSystem>();
             steeringManager.Init(minionParams.maxVelocity, minionParams.maxForce);
             initialPosition = transform.position;
             initialRotation = transform.rotation;
@@ -60,7 +62,10 @@ namespace App.World.Entity.Minion
             if(currentSeekTargetIndex < seekTargets.Count)
             {
                 var currentSeekTarget = seekTargets[currentSeekTargetIndex];
-                steeringManager.Seek(currentSeekTarget);
+                float slowingRadius = 0f;
+                if (currentSeekTargetIndex == seekTargets.Count - 1)
+                    slowingRadius = 1f;
+                steeringManager.Seek(currentSeekTarget, slowingRadius);
                 if (Vector2.Distance(transform.position, currentSeekTarget.transform.position) < minionParams.seekTargetReachedDistance)
                 {
                     currentSeekTargetIndex++;
@@ -78,7 +83,6 @@ namespace App.World.Entity.Minion
                 if (Vector2.Distance(transform.position, evadeTarget.transform.position) < minionParams.maxFleeDistance)
                 {
                     steeringManager.Evade(evadeTarget);
-                    Debug.Log("Evading");
                 }
                     
             }
@@ -87,6 +91,16 @@ namespace App.World.Entity.Minion
             {
                 steeringManager.FollowLeader(Leader, 1.5f, 0.7f, minionParams.separationRadius, minionParams.separationSpeed, 0.5f);
             }
+        }
+
+        public void StartParticles()
+        {
+            endingParticleSystem.Play();
+        }
+
+        public void StopParticles()
+        {
+            endingParticleSystem.Stop();
         }
 
         public void ResetState()
