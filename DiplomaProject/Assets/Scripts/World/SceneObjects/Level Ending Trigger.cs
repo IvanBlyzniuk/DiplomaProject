@@ -26,7 +26,7 @@ namespace App.World.SceneObjects
             this.blackOverlay = blackOverlay;
             circleCollider = GetComponent<CircleCollider2D>();
             particleForceField = GetComponent<ParticleSystemForceField>();
-            particleForceField.endRange = circleCollider.radius;
+            particleForceField.endRange = circleCollider.radius + 0.5f;
             updateText();
         }
 

@@ -122,7 +122,7 @@ namespace App.World.Entity.Minion
 
         public void Die()
         {
-            //TODO: play animation
+            Instantiate(minionParams.deathExplosion, transform.position, Quaternion.identity);
             gameObject.SetActive(false);
         }
 
