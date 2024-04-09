@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52985edbb10700c4396461ba72498125, type: 3}
+  m_Name: WirelookupTable
+  m_EditorClassIdentifier: 
+  tilePairs:
+  - original: {fileID: 11400000, guid: 28b866d2bf3d18c4c9cba6d1866646c5, type: 2}
+    active: {fileID: 11400000, guid: 249b844e05f6db84aa8e5abe016ad1e6, type: 2}
+  - original: {fileID: 11400000, guid: f73f10439f6f6ba44817295c55d1d488, type: 2}
+    active: {fileID: 11400000, guid: 7941c716e31fe6f4ab53c913fec8a9b6, type: 2}
+  - original: {fileID: 11400000, guid: 32582878b4341184b8e63864b2098e81, type: 2}
+    active: {fileID: 11400000, guid: c24a18f19b3310349876b27af8bdfe84, type: 2}
+  - original: {fileID: 11400000, guid: a101c9ea9a093184093728faf4a04fc6, type: 2}
+    active: {fileID: 11400000, guid: ab3296afc4d53814da34ae6b8d9fb494, type: 2}
+  - original: {fileID: 11400000, guid: 6e11d5f43dbddcf4d958dafb0cb5e3f9, type: 2}
+    active: {fileID: 11400000, guid: ad8aa648272516046ad775de015e9342, type: 2}
