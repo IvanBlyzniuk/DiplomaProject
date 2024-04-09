@@ -18,7 +18,7 @@ namespace App
         void Start()
         {
             unitSelectionSystem.Init(objectsContainer.MainCamera, objectsContainer.SelectorImage);
-            inputSystem.Init(unitSelectionSystem, flagSystem, objectsContainer.MainCamera, objectsContainer.CameraFollowTarget);
+            inputSystem.Init(unitSelectionSystem, flagSystem, objectsContainer.MainCamera, objectsContainer.CameraFollowTarget, objectsContainer.Pauser);
             flagSystem.Init(inputSystem, unitSelectionSystem, objectsContainer.FlagPlacementPreview, objectsContainer.MainCamera, objectsContainer.FlagSelectors);
             gameStateSystem.Init(inputSystem, objectsContainer.gameObject, unitSelectionSystem);
 

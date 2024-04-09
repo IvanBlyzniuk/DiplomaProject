@@ -16,14 +16,12 @@ namespace App.World.UI
 
         public void Pause()
         {
-            //gameObject.SetActive(true);
             animator.SetBool("isVisible", true);
             Time.timeScale = 0f;
         }
 
         public void Continue()
         {
-            //gameObject.SetActive(false);
             animator.SetBool("isVisible", false);
             Time.timeScale = 1f;
         }

@@ -1,4 +1,5 @@
 using App.World;
+using App.World.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace App.Systems
 {
     public class InputSystem : MonoBehaviour
     {
-
         private CameraTarget cameraTarget;
         private UnitSelectionSystem unitSelectionSystem;
         private FlagSystem flagSystem;
         private Camera mainCamera;
+        private Pauser pauser;
         private InputStates inputState;
         private Action<Vector2> lmbDown;
         private Action<Vector2> lmbHold;
@@ -58,12 +59,13 @@ namespace App.Systems
             }
         }
 
-        public void Init(UnitSelectionSystem unitSelectionSystem, FlagSystem flagSystem, Camera mainCamera, CameraTarget cameraTarget)
+        public void Init(UnitSelectionSystem unitSelectionSystem, FlagSystem flagSystem, Camera mainCamera, CameraTarget cameraTarget, Pauser pauser)
         {
             this.unitSelectionSystem = unitSelectionSystem;
             this.flagSystem = flagSystem;
             this.mainCamera = mainCamera;
             this.cameraTarget = cameraTarget;
+            this.pauser = pauser;
             InputState = InputStates.Empty;
         }
 
@@ -80,6 +82,8 @@ namespace App.Systems
                 unitSelectionSystem.ShouldAddSelection = true;
             if (Input.GetKeyUp(KeyCode.LeftShift))
                 unitSelectionSystem.ShouldAddSelection = false;
+            if (Input.GetKeyDown(KeyCode.Escape))
+                pauser.Pause();
         }
 
         private void HandleMouseInput()

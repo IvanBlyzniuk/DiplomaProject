@@ -15,7 +15,8 @@ namespace App.World
         [SerializeField] private SpriteRenderer flagPlacementPreview;
         [SerializeField] private GameStateChanger gameStateChanger;
         [SerializeField] private LevelEndingTrigger levelEndingTrigger;
-        [SerializeField] private Image blackOverlay; 
+        [SerializeField] private Image blackOverlay;
+        [SerializeField] private Pauser pauser;
         [SerializeField] private List<FlagSelector> flagSelectors;
         public CameraTarget CameraFollowTarget => cameraFollowTarget;
         public Camera MainCamera => mainCamera;
@@ -24,6 +25,7 @@ namespace App.World
         public GameStateChanger GameStateChanger => gameStateChanger;
         public LevelEndingTrigger LevelEndingTrigger => levelEndingTrigger;
         public Image BlackOverlay => blackOverlay;
+        public Pauser Pauser => pauser;
         public List<FlagSelector> FlagSelectors => flagSelectors;
     }
 }
