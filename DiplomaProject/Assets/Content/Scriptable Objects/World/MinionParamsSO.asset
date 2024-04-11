@@ -19,6 +19,6 @@ MonoBehaviour:
   separationRadius: 1
   separationSpeed: 0.3
   seekTargetReachedDistance: 0.5
-  maxFleeDistance: 5
+  maxFleeDistance: 2
   deathSound: {fileID: 8300000, guid: 5cff6f46ffaafb044977de8124688fce, type: 3}
   deathExplosion: {fileID: 2785261935495602297, guid: 5b0c3e797bb1706459ed191a843e76c5, type: 3}

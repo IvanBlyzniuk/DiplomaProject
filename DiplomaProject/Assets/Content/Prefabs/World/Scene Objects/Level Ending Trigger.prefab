@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 7658238364990264342}
   - component: {fileID: 4535555477236696508}
   - component: {fileID: 2006418707311446574}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Level Ending Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
