@@ -16,6 +16,7 @@ namespace App.Systems
         private Camera mainCamera;
         private Pauser pauser;
         private InputStates inputState;
+        private InputStates prevState;
         private Action<Vector2> lmbDown;
         private Action<Vector2> lmbHold;
         private Action<Vector2> mouseMoved;
@@ -30,8 +31,7 @@ namespace App.Systems
             get => inputState;
             set
             {
-                inputState = value;
-                switch(inputState)
+                switch(value)
                 {
                     case InputStates.Empty:
                         lmbDown = unitSelectionSystem.OnMousePressed;
@@ -41,21 +41,23 @@ namespace App.Systems
                         mouseMoved = null;
                         break;
                     case InputStates.PlacingFlag:
-                        lmbDown = flagSystem.OnMousePressed;
+                        prevState = inputState;
+                        lmbDown = (v) => { flagSystem.OnMousePressed(v); InputState = prevState; };
                         mouseMoved = flagSystem.OnMouseMoved;
-                        rmbDown = (v) => { flagSystem.ObjectToPLace = null; InputState = InputStates.Empty; };
+                        rmbDown = (v) => { flagSystem.ObjectToPLace = null; InputState = prevState; };
                         lmbHold = null;
                         lmbUp = null;
                         break;
                     case InputStates.Playing:
                         flagSystem.ObjectToPLace = null;
-                        lmbDown = null;
+                        lmbDown = unitSelectionSystem.OnMousePressed;
+                        lmbHold = unitSelectionSystem.OnMouseHold;
+                        lmbUp = unitSelectionSystem.OnMouseReleased;
                         mouseMoved = null;
                         rmbDown = null;
-                        lmbHold = null;
-                        lmbUp = null;
                         break;
                 }
+                inputState = value;
             }
         }
 

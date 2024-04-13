@@ -32,8 +32,8 @@ namespace App.Systems
             get => selectedFlag.gameObject; 
             set
             {
-                if (inputSystem.InputState == InputStates.Playing)
-                    return;
+                //if (inputSystem.InputState == InputStates.Playing)
+                //    return;
                 if (value == null)
                 {
                     preview.gameObject.SetActive(false);
@@ -113,7 +113,7 @@ namespace App.Systems
             Vector2 cursorWorldPosition = mainCamera.ScreenToWorldPoint(cursorPosition);
             if (!selectedFlag.CheckPlacementValidity(cursorWorldPosition) || ActiveSelector.AllowedFlagsCount == 0)
                 return;
-            inputSystem.InputState = InputStates.Empty;
+            //inputSystem.InputState = InputStates.Empty;
             GameObject flagObject = Instantiate(selectedFlag.gameObject, cursorWorldPosition, Quaternion.identity);
             BaseFlag placedFlag = flagObject.GetComponent<BaseFlag>();
             placedFlag.Init(unitSelectionSystem.SelectedMinions, ActiveSelector);
