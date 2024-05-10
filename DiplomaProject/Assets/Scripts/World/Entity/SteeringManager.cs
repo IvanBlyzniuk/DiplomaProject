@@ -10,8 +10,8 @@ namespace App.World.Entity
     public class SteeringManager : MonoBehaviour
     {
         #region debug_utils
-        private GameObject lastSeekTarget;
-        private float lastSeekTargetSlowingRadius;
+        //private GameObject lastSeekTarget;
+        //private float lastSeekTargetSlowingRadius;
         #endregion
 
         private bool shouldResetSteering = false;
@@ -24,7 +24,7 @@ namespace App.World.Entity
         private float maxVelocity;
         private float maxForce;
 
-        public float MaxVelocity => maxVelocity;
+        //public float MaxVelocity => maxVelocity;
 
         void Start()
         {
@@ -57,18 +57,18 @@ namespace App.World.Entity
             steering = Vector2.zero;
         }
 
-        private void OnDrawGizmos()
-        {
-            if (!Application.isPlaying)
-                return;
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, (Vector2)transform.position + rigidBody.velocity);
-            if(lastSeekTarget != null && lastSeekTarget.activeSelf)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawWireSphere(lastSeekTarget.transform.position, lastSeekTargetSlowingRadius);
-            }
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    if (!Application.isPlaying)
+        //        return;
+        //    Gizmos.color = Color.blue;
+        //    Gizmos.DrawLine(transform.position, (Vector2)transform.position + rigidBody.velocity);
+        //    if(lastSeekTarget != null && lastSeekTarget.activeSelf)
+        //    {
+        //        Gizmos.color = Color.green;
+        //        Gizmos.DrawWireSphere(lastSeekTarget.transform.position, lastSeekTargetSlowingRadius);
+        //    }
+        //}
 
         public void Seek(Vector3 targetPosition, float slowingRadius = 0f)
         {
@@ -92,8 +92,8 @@ namespace App.World.Entity
 
         public void Seek(GameObject target, float slowingRadius = 0f)
         {
-            lastSeekTarget = target;
-            lastSeekTargetSlowingRadius = slowingRadius;
+            //lastSeekTarget = target;
+            //lastSeekTargetSlowingRadius = slowingRadius;
             Seek(target.transform.position, slowingRadius);
         }
 
